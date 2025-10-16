@@ -1,5 +1,4 @@
 import homePage from "./pagesModel/homePage.js";
-import elUtil from "./utils/elUtil.js";
 import playerPage from "./pagesModel/playerPage.js";
 import searchPage from "./pagesModel/searchPage.js";
 import userSpacePage from "./pagesModel/userSpacePage.js";
@@ -29,13 +28,17 @@ const staticRoute = (title, url) => {
     if (searchPage.isUrlPage(url)) {
         console.log('搜索页')
         searchPage.intervalCheckSearchVideoList.start();
+        searchPage.addShieldButton();
     }
+    userSpacePage.addShieldButton();
+    /*
     elUtil.findElement('#sections ytd-guide-section-renderer:first-child #items>ytd-guide-entry-renderer:first-child').then(el => {
-        console.log('找到左侧首页菜单项', el);
-        el.addEventListener('click', (e) => {
-            console.log('点击了左侧首页菜单项', e.target);
+            console.log('找到左侧首页菜单项', el);
+            el.addEventListener('click', (e) => {
+                console.log('点击了左侧首页菜单项', e.target);
+            })
         })
-    })
+        */
 }
 
 /**
@@ -63,6 +66,7 @@ const dynamicRoute = (title, url) => {
     }
     if (searchPage.isUrlPage(url)) {
         searchPage.intervalCheckSearchVideoList.start();
+        searchPage.addShieldButton();
     } else {
         searchPage.intervalCheckSearchVideoList.stop();
     }

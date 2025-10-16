@@ -1,5 +1,3 @@
-
-
 /**
  * 判断一个变量是否是DOM元素
  * @param {*} obj - 要判断的变量
@@ -206,6 +204,37 @@ const findElements = async (selector, config = {}) => {
     });
 }
 
+/**
+ * 安装样式
+ * @param style {string} cssText 样式文本
+ * @param config {{}} 配置对象
+ * @param config.id {string} 样式id，默认为#def_gz_style
+ * @param config.el {Element} 样式添加元素的位置，默认为document.head
+ * @param config.cover {boolean} 是否覆盖已存在的样式，默认为false
+ */
+const installStyle = (style, config) => {
+    const defConfig = {
+        id: '#def_gz_style',
+        el: document.head,
+        cover: false,
+        ...config
+    }
+    const targetEl = defConfig.el.querySelector(defConfig.id);
+    if (defConfig.cover && targetEl) {
+        targetEl.textContent = style;
+        return;
+    }
+    const styleElement = document.createElement('style');
+    styleElement.textContent = style;
+    if (defConfig.id.startsWith('#')) {
+        styleElement.id = defConfig.id.replace(/^#/, '');
+    } else {
+        styleElement.setAttribute(styleElement.id, '');
+    }
+    defConfig.el.appendChild(styleElement);
+}
+
+
 export default {
-    findElement,findElements,findElementChain
+    findElement, findElements, findElementChain, installStyle
 }

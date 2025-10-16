@@ -5,7 +5,7 @@ import strUtil from "../utils/strUtil.js";
 import video_shielding from "../shieldingModel/video_shielding.js";
 import urlUtil from "../utils/urlUtil.js";
 import comments_shielding from "../shieldingModel/comments_shielding.js";
-import {valueCache} from "../data/valueCache.js";
+import controlStyle from '../css/gz-style.css'
 
 const isUrlPage = (url) => {
     return url.includes('://www.youtube.com/watch?v=')
@@ -46,7 +46,11 @@ const getChatMsgList = async () => {
         validationElFun: (config, selector) => {
             const el = document.querySelector(selector);
             if (el === null) return null;
-            return el.contentDocument;
+            const iframeDocument = el.contentDocument;
+            elUtil.findElement('head', {doc: iframeDocument}).then(headEl => {
+                elUtil.installStyle(controlStyle, {el: headEl})
+            })
+            return iframeDocument;
         }
     })
     const elList = await elUtil.findElements('#item-offset>#items .yt-live-chat-item-list-renderer',
@@ -75,7 +79,7 @@ const getChatMsgList = async () => {
 //检查聊天弹幕内容屏蔽
 const checkChatMsgListBlock = async () => {
     const list = await getChatMsgList();
-    for (let itemData of list) {
+    for (const itemData of list) {
         eventEmitter.send('event:插入屏蔽按钮', itemData);
     }
 }
@@ -99,6 +103,10 @@ const getRightVideoList = async () => {
     const elList = await elUtil.findElements('#items>yt-lockup-view-model,.ytd-item-section-renderer.lockup.yt-lockup-view-model--wrapper')
     const list = [];
     for (const el of elList) {
+        if (el.classList.contains('ytd-horizontal-card-list-renderer')) {
+            //跳过未知非视频项
+            continue;
+        }
         const titleContainerEl = el.querySelector('.yt-lockup-metadata-view-model');
         if (titleContainerEl === null) {
             // console.warn('标题容器元素未找到', el, titleContainerEl);
@@ -182,9 +190,6 @@ const getCommentList = async () => {
     return list
 }
 
-
-
-
 //间隔检测右侧视频屏蔽
 const intervalCheckPlayerVideoList = new IntervalExecutor(checkRightVideoListBlock,
     {processTips: true, IntervalName: '播放页右侧视频列表检测'});
@@ -208,6 +213,17 @@ const intervalCheckCommentList = new IntervalExecutor(async () => {
     }
 }, {processTips: true, IntervalName: '评论区检测'});
 
+//获取播放页用户信息
+const getPlayUserInfo = async () => {
+    const userAel = await elUtil.findElement('ytd-watch-metadata #text>a');
+    const userUrl = decodeURI(userAel.href);
+    const userName = userAel.textContent.trim();
+    const userId = urlUtil.getUrlUserId(userUrl);
+    const parseUrl = urlUtil.parseUrl(location.href);
+    const videoId = parseUrl.queryParams['v'];
+    return {userId, userName, userUrl, videoId}
+}
+
 const addShieldButton = () => {
     if (document.querySelector('#top-row.style-scope.ytd-watch-metadata button[gz_type]')) return;
     elUtil.findElement('#top-row.style-scope.ytd-watch-metadata').then(el => {
@@ -218,13 +234,15 @@ const addShieldButton = () => {
         but.id = 'user-shield-button';
         el.appendChild(but);
         but.addEventListener('click', () => {
-            console.log('播放页屏蔽按钮点击')
+            getPlayUserInfo().then(data => {
+                eventEmitter.emit('event:mask_options_dialog_box', data);
+            })
         })
     })
 }
 
 //视频页和直播页
 export default {
-    isUrlPage, getChatMsgList, getRightVideoList, intervalCheckPlayerVideoList,addShieldButton,
+    isUrlPage, getChatMsgList, getRightVideoList, intervalCheckPlayerVideoList, addShieldButton,
     intervalCheckCommentList, checkChatMsgListBlock, intervalChatMsgListBlockExecutor
 }

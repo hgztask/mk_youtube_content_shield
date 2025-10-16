@@ -8,7 +8,7 @@ import defCss from './css/def.css';
 import gzStyleCss from './css/gz-style.css'
 import './shieldingModel/video_shielding.js';
 import {getDrawerShortcutKeyGm} from "./data/localMKData.js";
-// import observeNetwork from './observeNetwork.js';
+import './model/maskOptionsDialogBox.js'
 
 console.log('油管内容屏蔽器脚本加载成功！');
 router.staticRoute(document.title, document.location.href);
@@ -22,11 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
 watch.addEventListenerUrlChange((newUrl, _oldUrl, title) => {
     router.dynamicRoute(title, newUrl);
 })
-
-
-/*watch.addEventListenerNetwork((url, windowUrl, winTitle, initiatorType)=>{
-    observeNetwork(url, windowUrl, winTitle, initiatorType)
-})*/
 
 window.addEventListener('load', () => {
     console.log('页面加载完成');

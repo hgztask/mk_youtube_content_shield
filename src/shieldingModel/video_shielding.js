@@ -4,7 +4,6 @@ import {promiseReject, returnTempVal} from "../data/globalValue.js";
 import shielding, {blockUserId, blockUserName} from "./shielding.js";
 import ruleMatchingUtil from "../utils/ruleMatchingUtil.js";
 import gmUtil from "../utils/gmUtil.js";
-import ruleUtil from "../utils/ruleUtil.js";
 
 //根据标题检查屏蔽
 export const blockTitle = (title) => {
@@ -31,57 +30,17 @@ export const blockChannelId = (id) => {
 }
 
 eventEmitter.on('event:插入屏蔽按钮', (videoOrCommentData) => {
-    const {
-        insertionPositionEl, explicitSubjectEl, el, userId, channelId, userName, videoId
-    } = videoOrCommentData;
+    const {insertionPositionEl, explicitSubjectEl, el} = videoOrCommentData;
     let but = el.querySelector('button[gz_type]');
     if (but !== null) return;
     but = document.createElement('button')
     but.setAttribute('gz_type', '');
     but.textContent = '屏蔽';
-    const showList = [];
-    if (userId) {
-        showList.push({label: `用户id精确屏蔽=${userId}`, value: 'userId_precise'})
-    }
-    if (channelId) {
-        showList.push({label: `频道id精确屏蔽=${channelId}`, value: 'channelId_precise'})
-    }
-    if (userName) {
-        showList.push({label: `用户名精确屏蔽=${userName}`, value: 'username_precise'})
-    }
-    if (videoId) {
-        showList.push({label: `视频id精确屏蔽=${videoId}`, value: 'videoId_precise'})
-    }
     but.addEventListener('click', (event) => {
         event.stopImmediatePropagation(); // 阻止事件冒泡和同一元素上的其他事件处理器
         event.preventDefault(); // 阻止默认行为
         console.log('点击了屏蔽按钮', videoOrCommentData);
-        eventEmitter.send('sheet-dialog', {
-            title: "屏蔽选项",
-            list: showList,
-            optionsClick: (item) => {
-                const {value} = item
-                let results;
-                switch (value) {
-                    case "userId_precise":
-                        results = ruleUtil.addRule(userId, value);
-                        break;
-                    case "channelId_precise":
-                        results = ruleUtil.addRule(channelId, value);
-                        break;
-                    case "username_precise":
-                        results = ruleUtil.addRule(userName, value);
-                        break;
-                    case "videoId_precise":
-                        results = ruleUtil.addRule(videoId, value);
-                        break;
-                    default:
-                        eventEmitter.send('el-msg', "出现意外的选项值")
-                        return;
-                }
-                eventEmitter.send('el-msg', results.res)
-            }
-        })
+        eventEmitter.emit('event:mask_options_dialog_box', videoOrCommentData)
     })
     insertionPositionEl.appendChild(but);
     //当没有显隐主体元素，则主动隐藏，不添加鼠标经过显示移开隐藏事件

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "用户名",
+    "key": "username",
+    "pattern": "模糊"
+  },
+  {
+    "name": "用户名",
+    "key": "username_precise",
+    "pattern": "精确"
+  },
+  {
+    "name": "用户名",
+    "key": "username_regex",
+    "pattern": "正则"
+  },
+  {
+    "name": "用户id",
+    "key": "userId_precise",
+    "pattern": "精确"
+  },
+  {
+    "name": "频道id",
+    "key": "channelId_precise",
+    "pattern": "精确"
+  },
+  {
+    "name": "标题",
+    "key": "title",
+    "pattern": "模糊"
+  },
+  {
+    "name": "标题",
+    "key": "title_regex",
+    "pattern": "正则"
+  },
+  {
+    "name": "视频id",
+    "key": "videoId_precise",
+    "pattern": "精确"
+  },
+  {
+    "name": "评论",
+    "key": "comment",
+    "pattern": "模糊"
+  },
+  {
+    "name": "评论",
+    "key": "comment_regex",
+    "pattern": "正则"
+  }
+]

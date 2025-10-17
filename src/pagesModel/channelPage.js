@@ -46,7 +46,7 @@ const intervalChannelPageVideoAndLiveListExecutor = new IntervalExecutor(async (
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '检查频道页视频和直播列表'})
+}, {processTips: true, intervalName: '频道页视频和直播列表'})
 
 //获取一起玩的视频合集列表
 const getLetsPlayVideoList = async () => {

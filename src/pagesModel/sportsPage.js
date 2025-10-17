@@ -28,7 +28,7 @@ const intervalSportsListExecutor = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '体育内容列表检测'})
+}, {processTips: true, intervalName: '体育内容列表'})
 
 //体育页面模块
 export default {

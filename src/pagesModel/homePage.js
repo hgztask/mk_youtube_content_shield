@@ -138,7 +138,7 @@ const checkHomeVideoBlock = async () => {
 
 //间隔检查首页视频列表屏蔽
 const intervalCheckHomeVideoList = new IntervalExecutor(checkHomeVideoBlock,
-    {processTips: true, IntervalName: '首页视频列表检测'})
+    {processTips: true, intervalName: '首页视频列表'})
 
 //设置首页 shorts 列表显隐
 const setHomeShortsItemDisplay = (hide = true) => {

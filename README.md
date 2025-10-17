@@ -44,4 +44,4 @@
  */
 ```
 
-- `@exclude   http://localhost:3003/`
+- `// @exclude     *://localhost:3003/*`

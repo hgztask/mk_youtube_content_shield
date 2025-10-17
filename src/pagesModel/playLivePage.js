@@ -72,7 +72,7 @@ const intervalChatMsgListBlockExecutor = new IntervalExecutor(async () => {
     } else {
         intervalChatMsgListBlockExecutor.stop('播放页非直播状态，取消检测聊天弹幕操作')
     }
-}, {processTips: true, IntervalName: '播放聊天弹幕列表检测'});
+}, {processTips: true, intervalName: '播放聊天弹幕列表'});
 
 export default {
     isLivePage, getChatMsgList, intervalChatMsgListBlockExecutor

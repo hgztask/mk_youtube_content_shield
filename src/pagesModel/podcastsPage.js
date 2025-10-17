@@ -38,7 +38,7 @@ const intervalPodcastsListExecutor = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '博客内容列表检测'})
+}, {processTips: true, intervalName: '博客内容列表'})
 
 
 //博客页面模块

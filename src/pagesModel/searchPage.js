@@ -47,7 +47,7 @@ const intervalCheckSearchVideoList = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '搜索页视频列表检测'});
+}, {processTips: true, intervalName: '搜索页视频列表'});
 
 /**
  * 搜索页搜到用户栏添加按钮

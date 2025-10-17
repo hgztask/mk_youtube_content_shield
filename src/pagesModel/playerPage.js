@@ -118,7 +118,7 @@ const getCommentList = async () => {
 
 //间隔检测右侧视频屏蔽
 const intervalCheckPlayerVideoList = new IntervalExecutor(checkRightVideoListBlock,
-    {processTips: true, IntervalName: '播放页右侧视频列表检测'});
+    {processTips: true, intervalName: '播放页右侧视频列表'});
 
 //间隔检测评论区屏蔽
 const intervalCheckCommentList = new IntervalExecutor(async () => {
@@ -137,7 +137,7 @@ const intervalCheckCommentList = new IntervalExecutor(async () => {
             list.forEach(v => eventEmitter.send('event:插入屏蔽按钮', v));
         })
     }
-}, {processTips: true, IntervalName: '评论区检测'});
+}, {processTips: true, intervalName: '评论区'});
 
 //获取播放页用户信息
 const getPlayUserInfo = async () => {

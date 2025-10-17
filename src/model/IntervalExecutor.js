@@ -1,3 +1,5 @@
+import {eventEmitter} from "./EventEmitter.js";
+
 //间隔执行器
 export class IntervalExecutor {
     #interval = null;
@@ -6,7 +8,9 @@ export class IntervalExecutor {
      */
     #func;
     #config;
-
+    static #intervalExecutorList = [];
+    #statusObj = {};
+    #keyIntervalName = '';
 
     /**
      * 创建间隔执行器
@@ -15,11 +19,33 @@ export class IntervalExecutor {
      * @param config.timeout {number} 间隔时间
      */
     constructor(func, config = {}) {
-        const defConfig = {
-            timeout: 2000, processTips: false, IntervalName: '默认'
-        }
+        const defConfig = {timeout: 2000, processTips: false, intervalName: null}
         this.#config = Object.assign(defConfig, config);
+        if (this.#config.intervalName === null) {
+            throw new Error('请设置间隔名称');
+        }
         this.#func = func;
+        const intervalName = this.#config.intervalName;
+        const intervalExecutorList = IntervalExecutor.#intervalExecutorList;
+        const index = intervalExecutorList.length + 1;
+        this.#keyIntervalName = `${intervalName}_${index}`;
+        this.#statusObj = {status: false, key: this.#keyIntervalName, name: this.#config.intervalName}
+        intervalExecutorList.push(this);
+    }
+
+    //根据Key名称设置对应执行器状态
+    static setIntervalExecutorStatus(keyIntervalName, status) {
+        const find = IntervalExecutor.#intervalExecutorList.find(item => item.getKeyIntervalName() === keyIntervalName);
+        if (find === undefined) return;
+        if (status) {
+            find.start();
+        } else {
+            find.stop();
+        }
+    }
+
+    getKeyIntervalName = () => {
+        return this.#keyIntervalName;
     }
 
     stop(msg = null) {
@@ -32,20 +58,24 @@ export class IntervalExecutor {
             console.log(msg);
         }
         if (processTips) {
-            console.log(`stop:${this.#config.IntervalName}间隔执行器`)
+            console.log(`stop:检测${this.#config.intervalName}间隔执行器`)
         }
-    }
-
-    start() {
-        if (this.#interval !== null) return;
-        this.#interval = setInterval(this.#func, this.#config.timeout);
-        const processTips = this.#config.processTips;
-        if (processTips) {
-            console.log(`start:${this.#config.IntervalName}间隔执行器`)
-        }
+        this.#statusObj.status = false;
+        eventEmitter.send('event:update:intervalExecutorStatus', this.#statusObj)
     }
 
     setTimeout(timeout) {
         this.#config.timeout = timeout;
+    }
+
+    start() {
+        if (this.#interval !== null) return;
+        this.#statusObj.status = true;
+        eventEmitter.send('event:update:intervalExecutorStatus', this.#statusObj)
+        this.#interval = setInterval(this.#func, this.#config.timeout);
+        const processTips = this.#config.processTips;
+        if (processTips) {
+            console.log(`start:检测${this.#config.intervalName}间隔执行器`)
+        }
     }
 }

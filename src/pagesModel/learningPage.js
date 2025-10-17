@@ -23,7 +23,7 @@ const intervalLearningListExecutor = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '学习列表检测'})
+}, {processTips: true, intervalName: '学习列表检测'})
 
 //学习页面模块
 export default {

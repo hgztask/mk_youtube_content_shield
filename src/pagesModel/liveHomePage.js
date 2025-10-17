@@ -46,7 +46,7 @@ const intervalLiveListExecutor = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '直播列表检测'})
+}, {processTips: true, intervalName: '直播列表'})
 
 //删除顶部大横幅推荐
 const removeLiveHomeTopBanner = async () => {

@@ -11,6 +11,9 @@
         <el-tab-pane lazy label="页面处理">
           <PageProcessingView/>
         </el-tab-pane>
+        <el-tab-pane label="检测状态" lazy>
+          <DetectionStatusView/>
+        </el-tab-pane>
         <el-tab-pane lazy label="面板设置">
           <PanelSettingsView/>
         </el-tab-pane>
@@ -39,11 +42,12 @@ import DonateLayoutView from "./views/DonateLayoutView.vue";
 import playerPage from "./pagesModel/playerPage.js";
 import SheetDialog from "./eventEmitter_components/SheetDialog.vue";
 import PageProcessingView from "./views/PageProcessingView.vue";
+import DetectionStatusView from "./views/DetectionStatusView.vue";
 
 export default {
   components: {
     ShowImgDialog, RuleManagementView, PanelSettingsView, AboutAndFeedbackView, DonateLayoutView,
-    SheetDialog, PageProcessingView
+    SheetDialog, PageProcessingView, DetectionStatusView
   },
   data() {
     return {

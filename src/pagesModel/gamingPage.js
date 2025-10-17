@@ -18,7 +18,7 @@ const intervalCheckGamingVideoList = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '检查游戏页视频列表'})
+}, {processTips: true, intervalName: '游戏页视频列表'})
 
 export default {
     isUrlPage, intervalCheckGamingVideoList

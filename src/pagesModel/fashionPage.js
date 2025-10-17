@@ -27,7 +27,7 @@ const intervalFashionListExecutor = new IntervalExecutor(async () => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
     }
-}, {processTips: true, IntervalName: '时尚与美容内容列表检测'})
+}, {processTips: true, intervalName: '时尚与美容内容列表'})
 
 //时尚与美容页面模块
 export default {

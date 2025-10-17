@@ -13,8 +13,7 @@ const getMetaVideoList = (elList) => {
         }
         const explicitSubjectEl = el.querySelector('#meta');
         const insertionPositionEl = el.querySelector('#metadata');
-        const titleAEl = explicitSubjectEl.querySelector('#video-title-link')
-        const titleEl = titleAEl.querySelector('#video-title')
+        const titleAEl = explicitSubjectEl.querySelector('a#video-title-link,a#video-title')
         const userAEl = insertionPositionEl.querySelector('#text-container a')
         const viewEl = insertionPositionEl.querySelector('#metadata-line>span')
         const durationEl = el.querySelector('.yt-badge-shape__text');
@@ -32,7 +31,7 @@ const getMetaVideoList = (elList) => {
                 view = strUtil.parseView(viewText);
             }
         }
-        const title = titleEl.textContent.trim();
+        const title = titleAEl.textContent.trim();
         const videoAddress = titleAEl.href;
         const userUrl = userAEl.href;
         const videoId = urlUtil.getUrlVideoId(videoAddress);

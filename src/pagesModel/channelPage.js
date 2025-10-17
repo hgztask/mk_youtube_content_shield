@@ -1,9 +1,9 @@
 import elUtil from "../utils/elUtil.js";
-import strUtil from "../utils/strUtil.js";
 import urlUtil from "../utils/urlUtil.js";
 import {IntervalExecutor} from "../model/IntervalExecutor.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 import video_shielding from "../shieldingModel/video_shielding.js";
+import pageCommon from "./pageCommon.js";
 
 //获取url中当前平道选中的标签
 const getChannelPageCurrentTab = (parseUrl) => {
@@ -35,41 +35,7 @@ const isUserChannelPage = (url = location.href) => {
 //获取数据列表，直播和视频
 const getVideoAndLiveDataList = async () => {
     const elList = await elUtil.findElements('ytd-browse[page-subtype="channels"] #items>ytd-grid-video-renderer');
-    const list = [];
-    for (const el of elList) {
-        const explicitSubjectEl = el.querySelector('#meta');
-        const insertionPositionEl = el.querySelector('#metadata');
-        const titleAEl = explicitSubjectEl.querySelector('#video-title')
-        const userAEl = insertionPositionEl.querySelector('#text-container a')
-        const viewEl = insertionPositionEl.querySelector('#metadata-line>span')
-        const durationEl = el.querySelector('.yt-badge-shape__text');
-        const durationTxt = durationEl ? durationEl.textContent.trim() : null;
-        let duration = -1, view = -1, liveBadgeTxt = null, liveBadgeEl = null;
-        if (durationEl) {
-            if (durationTxt.includes(':')) {
-                duration = strUtil.timeStringToSeconds(durationTxt);
-            }
-        }
-        if (durationEl === null) {
-            //这里的直播徽章目前仅在频道页中测试，比如游戏页中并未找到
-            liveBadgeEl = el.querySelector('#video-badges p.style-scope.ytd-badge-supported-renderer')
-            liveBadgeTxt = liveBadgeEl?.textContent.trim() ?? null;
-        }
-        if (viewEl) {
-            const viewText = viewEl.textContent.trim();
-            view = strUtil.parseView(viewText);
-        }
-        const title = titleAEl.textContent.trim();
-        const videoAddress = titleAEl.href;
-        const userUrl = userAEl.href;
-        const videoId = urlUtil.getUrlVideoId(videoAddress);
-        const userId = urlUtil.getUrlUserId(userUrl);
-        list.push({
-            el, title, view, userId, videoAddress, userUrl, duration, videoId,
-            insertionPositionEl, explicitSubjectEl, durationTxt, liveBadgeEl, liveBadgeTxt
-        })
-    }
-    return list;
+    return pageCommon.getMetaVideoList(elList);
 }
 
 //间隔检查频道页视频和直播列表

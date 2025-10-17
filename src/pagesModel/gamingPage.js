@@ -6,6 +6,9 @@ import video_shielding from "../shieldingModel/video_shielding.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 
 const isUrlPage = (url = location.href) => {
+    if (url.includes('://www.youtube.com/gaming/games')) {
+        return false;//排除，该页不处理
+    }
     return url.includes('://www.youtube.com/gaming')
 }
 

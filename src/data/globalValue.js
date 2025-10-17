@@ -10,7 +10,7 @@ const b_url = 'https://space.bilibili.com/473239155'
 const scriptCat_js_url = 'https://scriptcat.org/zh-CN/script-show-page/4389'
 
 //脚本开源地址
-const github_url = 'https://github.com/hgztask/mk-MikuFansDataHive'
+const github_url = 'https://github.com/hgztask/mk_youtube_content_shield'
 
 /**
  * 返回网页前台window对象

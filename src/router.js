@@ -7,6 +7,7 @@ import gamingPage from "./pagesModel/gamingPage.js";
 import liveHomePage from "./pagesModel/liveHomePage.js";
 import channelPage from "./pagesModel/channelPage.js";
 import urlUtil from "./utils/urlUtil.js";
+import learningPage from "./pagesModel/learningPage.js";
 
 /**
  * 静态路由
@@ -48,6 +49,10 @@ const staticRoute = (title, url) => {
     if (channelPage.isUrlPage(url)) {
         console.log('频道页')
         channelPage.dynamicRun(parseUrl);
+    }
+    if (learningPage.isUrlPage(url)) {
+        console.log('学习页')
+        learningPage.intervalLearningListExecutor.start()
     }
     userSpacePage.addShieldButton();
     /*
@@ -108,6 +113,11 @@ const dynamicRoute = (title, url) => {
         channelPage.dynamicRun(parseUrl);
     } else {
         channelPage.intervalChannelPageVideoAndLiveListExecutor.stop();
+    }
+    if (learningPage.isUrlPage(url)) {
+        learningPage.intervalLearningListExecutor.start()
+    } else {
+        learningPage.intervalLearningListExecutor.stop()
     }
     userSpacePage.addShieldButton();
 }

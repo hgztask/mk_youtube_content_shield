@@ -54,9 +54,6 @@ export default {
     testBut() {
     },
     test1But() {
-      playerPage.getChatMsgList().then(list => {
-        console.log(list);
-      })
     },
     test2But() {
       playerPage.getRightVideoList().then(elList => {

@@ -14,7 +14,7 @@ export default {
   components: {AddRuleDialog, RuleSetValueDialog, ViewRulesRuleDialog},
   data() {
     return {
-      cascaderVal: ['精确匹配', 'userId'],
+      cascaderVal: ['精确匹配', 'userId_precise'],
       cascaderOptions: ruleKeyListData.getSelectOptions(),
       addRuleDialogVisible: false,
       addRuleDialogRuleInfo: {key: '', name: ''}

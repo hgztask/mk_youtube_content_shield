@@ -2,6 +2,7 @@ import homePage from "./pagesModel/homePage.js";
 import playerPage from "./pagesModel/playerPage.js";
 import searchPage from "./pagesModel/searchPage.js";
 import userSpacePage from "./pagesModel/userSpacePage.js";
+import playLivePage from "./pagesModel/playLivePage.js";
 
 /**
  * 静态路由
@@ -18,7 +19,7 @@ const staticRoute = (title, url) => {
         console.log('播放页or直播页')
         playerPage.intervalCheckPlayerVideoList.start();
         playerPage.intervalCheckCommentList.start()
-        playerPage.intervalChatMsgListBlockExecutor.start();
+        playLivePage.intervalChatMsgListBlockExecutor.start();
         playerPage.addShieldButton();
     }
     if (userSpacePage.isUserSpacePage(url)) {
@@ -51,12 +52,12 @@ const dynamicRoute = (title, url) => {
     if (playerPage.isUrlPage(url)) {
         playerPage.intervalCheckPlayerVideoList.start();
         playerPage.intervalCheckCommentList.start();
-        playerPage.intervalChatMsgListBlockExecutor.start();
+        playLivePage.intervalChatMsgListBlockExecutor.start();
         playerPage.addShieldButton();
     } else {
         playerPage.intervalCheckPlayerVideoList.stop();
         playerPage.intervalCheckCommentList.stop();
-        playerPage.intervalChatMsgListBlockExecutor.stop();
+        playLivePage.intervalChatMsgListBlockExecutor.stop();
     }
     if (homePage.isHomeUrlPage()) {
         homePage.intervalCheckHomeVideoList.start();

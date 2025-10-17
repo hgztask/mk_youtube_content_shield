@@ -62,7 +62,8 @@ export default {
                     'vue/multi-word-component-names': 'off',
                     'no-fallthrough': 'off',
                     'no-unused-vars': 'off',
-                    'no-async-promise-executor': 'off'
+                    'no-async-promise-executor': 'off',
+                    'no-debugger': 'off'
                 }
             }
         }),

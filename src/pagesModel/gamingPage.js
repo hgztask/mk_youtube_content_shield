@@ -22,22 +22,20 @@ const getVideoList = async () => {
         const durationTxt = durationEl ? durationEl.textContent.trim() : null;
         let duration = -1;
         if (durationEl) {
-            if (!durationTxt.includes(':')) {
-                console.log('该内容疑似非视频')
-                continue;
+            if (durationTxt.includes(':')) {
+                duration = strUtil.timeStringToSeconds(durationTxt);
             }
-            duration = strUtil.timeStringToSeconds(durationTxt);
         }
+        const viewText = viewEl.textContent.trim();
+        const view = strUtil.parseView(viewText);
         const title = titleAEl.textContent.trim();
         const videoAddress = titleAEl.href;
         const userUrl = userAEl.href;
-        const viewText = viewEl.textContent.trim();
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const userId = urlUtil.getUrlUserId(userUrl);
-        const view = strUtil.parseView(viewText);
         list.push({
-            el, title, userId, videoAddress, userUrl, videoId, insertionPositionEl, explicitSubjectEl,
-            duration, durationTxt, view
+            el, title, view, userId, videoAddress, userUrl, duration, videoId,
+            insertionPositionEl, explicitSubjectEl, durationTxt
         })
     }
     return list;

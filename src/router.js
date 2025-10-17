@@ -4,6 +4,7 @@ import searchPage from "./pagesModel/searchPage.js";
 import userSpacePage from "./pagesModel/userSpacePage.js";
 import playLivePage from "./pagesModel/playLivePage.js";
 import gamingPage from "./pagesModel/gamingPage.js";
+import liveHomePage from "./pagesModel/liveHomePage.js";
 
 /**
  * 静态路由
@@ -35,6 +36,10 @@ const staticRoute = (title, url) => {
     if (gamingPage.isUrlPage(url)) {
         console.log('游戏页')
         gamingPage.intervalCheckGamingVideoList.start();
+    }
+    if (liveHomePage.isUrlPage(url)) {
+        console.log('直播首页')
+        liveHomePage.intervalLiveListExecutor.start();
     }
     userSpacePage.addShieldButton();
     /*
@@ -83,6 +88,11 @@ const dynamicRoute = (title, url) => {
         gamingPage.intervalCheckGamingVideoList.start();
     } else {
         gamingPage.intervalCheckGamingVideoList.stop();
+    }
+    if (liveHomePage.isUrlPage(url)) {
+        liveHomePage.intervalLiveListExecutor.start();
+    } else {
+        liveHomePage.intervalLiveListExecutor.stop();
     }
     userSpacePage.addShieldButton();
 }

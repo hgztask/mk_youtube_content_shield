@@ -117,9 +117,6 @@ const getShortsVideoDataList = async () => {
     return list;
 }
 
-window['getVideoDataList'] = getVideoDataList;
-window['getShortsVideoDataList'] = getShortsVideoDataList;
-
 //检查首页视频屏蔽
 const checkHomeVideoBlock = async () => {
     const list = await getVideoDataList();
@@ -127,6 +124,15 @@ const checkHomeVideoBlock = async () => {
         video_shielding.shieldingVideoDecorated(v).catch(() => {
             eventEmitter.send('event:插入屏蔽按钮', v);
         })
+    }
+    //获取大幅赞助商广告
+    const adList = document.querySelectorAll('#masthead-ad');
+    if (adList.length === 0) return;
+    const delSponsoredAdsV = isDelSponsoredAdsGm();
+    if (!delSponsoredAdsV) return
+    for (const adEl of adList) {
+        adEl.remove();
+        console.log('已删除大幅赞助商广告', adEl);
     }
 }
 

@@ -39,6 +39,7 @@ const staticRoute = (title, url) => {
     }
     if (liveHomePage.isUrlPage(url)) {
         console.log('直播首页')
+        liveHomePage.removeLiveHomeTopBanner()
         liveHomePage.intervalLiveListExecutor.start();
     }
     userSpacePage.addShieldButton();
@@ -90,6 +91,7 @@ const dynamicRoute = (title, url) => {
         gamingPage.intervalCheckGamingVideoList.stop();
     }
     if (liveHomePage.isUrlPage(url)) {
+        liveHomePage.removeLiveHomeTopBanner()
         liveHomePage.intervalLiveListExecutor.start();
     } else {
         liveHomePage.intervalLiveListExecutor.stop();

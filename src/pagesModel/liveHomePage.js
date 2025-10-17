@@ -4,6 +4,7 @@ import urlUtil from "../utils/urlUtil.js";
 import {IntervalExecutor} from "../model/IntervalExecutor.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 import video_shielding from "../shieldingModel/video_shielding.js";
+import {isDelLiveHomeTopBannerGm} from "../data/localMKData.js";
 
 const defLiveHomeListSelector = 'ytd-rich-item-renderer.style-scope.ytd-rich-shelf-renderer';
 let liveRootEl = null;
@@ -20,11 +21,16 @@ const isUrlPage = (url = location.href) => {
         url.includes('://www.youtube.com/channel/UC4R8DWoMoI7CAwX8_LjQHig/livetab')
 }
 
+//是否为直播首页中的其他页面，属于直播首页的子页面
+const isUrlOtherLivePage = (url = location.href) => {
+    return url.includes('://www.youtube.com/channel/UC4R8DWoMoI7CAwX8_LjQHig/livetab?ss=')
+}
+
 //获取直播列表
 const getLiveList = async () => {
     const liveHomRootEl = await getLiveHomRootEl();
     let selector;
-    if (location.href.includes('://www.youtube.com/channel/UC4R8DWoMoI7CAwX8_LjQHig/livetab?ss=')) {
+    if (isUrlOtherLivePage()) {
         selector = 'ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer'
     } else {
         selector = defLiveHomeListSelector;
@@ -75,7 +81,21 @@ const intervalLiveListExecutor = new IntervalExecutor(async () => {
         })
     }
 }, {processTips: false, IntervalName: '直播列表检测'})
+
+
+//删除顶部大横幅推荐
+const removeLiveHomeTopBanner = async () => {
+    if (!isUrlPage()) return;
+    if (isUrlOtherLivePage()) return
+    if (!isDelLiveHomeTopBannerGm()) return;
+    const liveHomeEl = await getLiveHomRootEl();
+    const el = await elUtil.findElement('#content>ytd-carousel-item-renderer', {doc: liveHomeEl});
+    el.remove();
+    console.log('已删除直播首页顶部大横幅推荐', el);
+}
+
+
 //直播首页模块
 export default {
-    isUrlPage, getLiveList, intervalLiveListExecutor
+    isUrlPage, getLiveList, intervalLiveListExecutor, removeLiveHomeTopBanner
 }

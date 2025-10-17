@@ -37,15 +37,12 @@ const getChatMsgList = async () => {
             return iframeDocument;
         }
     })
-    const elList = await elUtil.findElements('#item-offset>#items .yt-live-chat-item-list-renderer',
+    const elList = await elUtil.findElements('#item-offset>#items yt-live-chat-text-message-renderer.yt-live-chat-item-list-renderer',
         {doc: chatFrameEl});
     const list = []
+    const engagementEl = chatFrameEl.querySelector('yt-live-chat-viewer-engagement-message-renderer');
+    if (engagementEl) engagementEl.remove();
     for (const el of elList) {
-        //跳过系统提示类
-        if (el.tagName === 'YT-LIVE-CHAT-VIEWER-ENGAGEMENT-MESSAGE-RENDERER') {
-            el.remove();
-            continue;
-        }
         const contentEl = el.querySelector('#content');
         const nameEl = contentEl.querySelector('#author-name')
         const userName = nameEl.textContent.trim();

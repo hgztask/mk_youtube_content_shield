@@ -16,7 +16,7 @@ const getPodcastsList = async () => {
     let rootEl = valueCache.get('rootEl:podcasts');
     if (rootEl === null) {
         const els = await elUtil.findElements('ytd-two-column-browse-results-renderer.style-scope.ytd-browse.grid.grid-disabled[disable-grid-state-aware]')
-        for (let el of els) {
+        for (const el of els) {
             if (el.querySelector('a[href^="/podcasts"]')) {
                 rootEl = el;
                 valueCache.set('rootEl:podcasts', rootEl);

@@ -1,16 +1,24 @@
 import importContent from 'rollup-plugin-import-content'
 import vue from 'rollup-plugin-vue';
-import esbuild from 'rollup-plugin-esbuild';
+import replace from '@rollup/plugin-replace'
 import serve from 'rollup-plugin-serve';
 import eslint from '@rollup/plugin-eslint';
-console.log('Current working directory:', process.cwd());
 
+console.log('Current working directory:', process.cwd());
+// 开发环境为 true，生产环境为 false，默认为开发环境
+const __DEV__ = (process.env.ROLLUP_ENV || 'development') === 'development';
+console.log('环境为', __DEV__);
 export default {
     // 性能监控
     perf: false,
     input: 'src/main.js',
     external: ['vue', 'dexie'],
     plugins: [
+        // 使用 replace 插件定义全局变量
+        replace({
+            __DEV__: JSON.stringify(__DEV__),
+            preventAssignment: true,
+        }),
         importContent({
             fileName: ['.css']
         }),
@@ -54,7 +62,7 @@ export default {
                     'vue/multi-word-component-names': 'off',
                     'no-fallthrough': 'off',
                     'no-unused-vars': 'off',
-                    'no-async-promise-executor':'off'
+                    'no-async-promise-executor': 'off'
                 }
             }
         }),

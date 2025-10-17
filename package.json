@@ -4,11 +4,12 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c --environment ROLLUP_ENV:production",
     "watch:dev": "rollup -w -c"
   },
   "private": true,
   "devDependencies": {
+    "@rollup/plugin-replace": "^6.0.2",
     "@babel/eslint-parser": "^7.28.0",
     "@rollup/plugin-eslint": "^9.0.5",
     "dexie": "^4.0.10",

@@ -10,6 +10,7 @@ import urlUtil from "./utils/urlUtil.js";
 import learningPage from "./pagesModel/learningPage.js";
 import sportsPage from "./pagesModel/sportsPage.js";
 import fashionPage from "./pagesModel/fashionPage.js";
+import podcastsPage from "./pagesModel/podcastsPage.js";
 
 /**
  * 静态路由
@@ -63,6 +64,10 @@ const staticRoute = (title, url) => {
     if (fashionPage.isUrlPage(url)) {
         console.log('时尚与美容页')
         fashionPage.intervalFashionListExecutor.start()
+    }
+    if (podcastsPage.isUrlPage(url)) {
+        console.log('博客页')
+        podcastsPage.intervalPodcastsListExecutor.start()
     }
     userSpacePage.addShieldButton();
     /*
@@ -138,6 +143,11 @@ const dynamicRoute = (title, url) => {
         fashionPage.intervalFashionListExecutor.start();
     } else {
         fashionPage.intervalFashionListExecutor.stop()
+    }
+    if (podcastsPage.isUrlPage(url)) {
+        podcastsPage.intervalPodcastsListExecutor.start()
+    } else {
+        podcastsPage.intervalPodcastsListExecutor.stop()
     }
     userSpacePage.addShieldButton();
 }

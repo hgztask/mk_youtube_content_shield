@@ -1,15 +1,11 @@
 import elUtil from "../utils/elUtil.js";
 import urlUtil from "../utils/urlUtil.js";
 import {eventEmitter} from "../model/EventEmitter.js";
+import channelPage from "./channelPage.js";
 
 //是否为用户页
 const isUserSpacePage = (url = location.href) => {
     return url.includes('://www.youtube.com/@')
-}
-
-//是否为频道页
-const isChannelPage = (url = location.href) => {
-    return url.includes('://www.youtube.com/channel')
 }
 
 /**
@@ -19,7 +15,7 @@ const isChannelPage = (url = location.href) => {
 const getUserInfo = async () => {
     const winHref = location.href;
     const info = {};
-    if (winHref.includes('://www.youtube.com/channel/')) {
+    if (channelPage.isUrlPage(winHref)) {
         info.channelId = urlUtil.getUrlChannelId(winHref)
     }
     if (winHref.includes('://www.youtube.com/@')) {
@@ -44,7 +40,7 @@ const getUserInfo = async () => {
  * 只有是用户页面才执行，页面只添加一次
  */
 const addShieldButton = () => {
-    if (!isUserSpacePage() && !isChannelPage()) return;
+    if (!isUserSpacePage() && !channelPage.isUrlPage()) return;
     if (document.querySelector('ytd-browse[page-subtype="channels"] yt-flexible-actions-view-model button[gz_type]#user-shield-button')) return;
     elUtil.findElement('ytd-browse[page-subtype="channels"] yt-flexible-actions-view-model').then(el => {
         if (el.querySelector('button[gz_type]#user-shield-button')) return;
@@ -65,5 +61,5 @@ const run = () => {
 }
 
 export default {
-    isUserSpacePage, isChannelPage, run, addShieldButton
+    isUserSpacePage, run, addShieldButton
 }

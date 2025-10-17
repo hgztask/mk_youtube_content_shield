@@ -5,6 +5,8 @@ import userSpacePage from "./pagesModel/userSpacePage.js";
 import playLivePage from "./pagesModel/playLivePage.js";
 import gamingPage from "./pagesModel/gamingPage.js";
 import liveHomePage from "./pagesModel/liveHomePage.js";
+import channelPage from "./pagesModel/channelPage.js";
+import urlUtil from "./utils/urlUtil.js";
 
 /**
  * 静态路由
@@ -12,7 +14,8 @@ import liveHomePage from "./pagesModel/liveHomePage.js";
  * @param url {string} url地址
  */
 const staticRoute = (title, url) => {
-    console.log('静态路由', title, url);
+    const parseUrl = urlUtil.parseUrl(url);
+    console.log('静态路由', title, url, parseUrl);
     if (homePage.isHomeUrlPage()) {
         console.log('youtube首页')
         homePage.run();
@@ -42,6 +45,10 @@ const staticRoute = (title, url) => {
         liveHomePage.removeLiveHomeTopBanner()
         liveHomePage.intervalLiveListExecutor.start();
     }
+    if (channelPage.isUrlPage(url)) {
+        console.log('频道页')
+        channelPage.dynamicRun(parseUrl);
+    }
     userSpacePage.addShieldButton();
     /*
     elUtil.findElement('#sections ytd-guide-section-renderer:first-child #items>ytd-guide-entry-renderer:first-child').then(el => {
@@ -59,7 +66,8 @@ const staticRoute = (title, url) => {
  * @param url {string} url地址
  */
 const dynamicRoute = (title, url) => {
-    console.log('动态路由', title, url);
+    const parseUrl = urlUtil.parseUrl(url);
+    console.log('动态路由', title, url, parseUrl);
     if (playerPage.isUrlPage(url)) {
         playerPage.intervalCheckPlayerVideoList.start();
         playerPage.intervalCheckCommentList.start();
@@ -96,11 +104,30 @@ const dynamicRoute = (title, url) => {
     } else {
         liveHomePage.intervalLiveListExecutor.stop();
     }
+    if (channelPage.isUrlPage(url)) {
+        channelPage.dynamicRun(parseUrl);
+    } else {
+        channelPage.intervalChannelPageVideoAndLiveListExecutor.stop();
+    }
     userSpacePage.addShieldButton();
+}
+
+//页面加载完之后的静态路由
+const staticRoutePageAfterLoad = (title, url) => {
+    const parseUrl = urlUtil.parseUrl(url);
+    console.log('页面加载完之后的静态路由', title, url, parseUrl)
+    if (channelPage.isUrlPage(url)) {
+        if (channelPage.isUserChannelPage(url)) {
+            console.log('用户页的频道页')
+            return;
+        }
+        channelPage.dynamicRun(parseUrl);
+    }
 }
 
 //路由模块
 export default {
     staticRoute,
-    dynamicRoute
+    dynamicRoute,
+    staticRoutePageAfterLoad
 }

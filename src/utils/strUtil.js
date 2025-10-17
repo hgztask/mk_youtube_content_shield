@@ -31,7 +31,7 @@ const timeStringToSeconds = (timeStr) => {
  */
 const parseView = (viewTxt) => {
     const ViewIntStr = viewTxt.replace(/[^0-9]/g, '');
-    if (viewTxt.endsWith('万次观看')) {
+    if (viewTxt.endsWith('万次观看') || viewTxt.endsWith('万人正在观看')) {
         return parseInt(ViewIntStr) * 10000;
     } else {
         return parseInt(ViewIntStr);

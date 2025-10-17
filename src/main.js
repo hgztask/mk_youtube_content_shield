@@ -25,6 +25,7 @@ watch.addEventListenerUrlChange((newUrl, _oldUrl, title) => {
 
 window.addEventListener('load', () => {
     console.log('页面加载完成');
+    router.staticRoutePageAfterLoad(document.title, location.href);
     /**
      * 注意地方，油管上左侧选项切换显示的内容页不同，但都是位于#page-manager标签下的直接子元素
      * 大部分都是根据ytd-browse[page-subtype="这里是类型"]来判断

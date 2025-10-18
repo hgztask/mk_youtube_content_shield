@@ -61,10 +61,16 @@ eventEmitter.on('event:插入屏蔽按钮', (videoOrCommentData) => {
  * @returns {{state:boolean,type:string|any,matching:string|any}} 是否屏蔽
  */
 const shieldingVideo = (videoData) => {
-    const {title, userId, duration, userName, videoId, view, channelId} = videoData;
+    const {title, userId, duration, userName, videoId, view, channelId, userNameList} = videoData;
     let res = blockTitle(title);
     if (res.state) return res;
     res = blockUserName(userName);
+    if (userNameList) {
+        for (const n of userNameList) {
+            res = blockUserName(userName);
+            if (res.state) return res;
+        }
+    }
     if (res.state) return res;
     res = blockUserId(userId);
     if (res.state) return res;

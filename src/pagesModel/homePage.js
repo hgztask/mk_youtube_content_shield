@@ -21,7 +21,7 @@ const getVideoDataList = async () => {
     for (const el of elList) {
         //时长元素，该值也有可能为合辑
         const durationEl = el.querySelector('.yt-badge-shape__text');
-        //时长或合辑文本
+        //时长或合辑，即将开始、直播
         const durationTxt = durationEl ? durationEl.textContent.trim() : null;
         //赞助商广告
         const sponsoredAds = el.querySelector('.yt-badge-shape--ad .yt-badge-shape__text');
@@ -30,15 +30,9 @@ const getVideoDataList = async () => {
             if (delSponsoredAdsV) {
                 el.remove();
                 console.log('已删除赞助商广告', el)
+                continue;
             }
         }
-        switch (durationTxt) {
-            case '合辑':
-                //跳过合辑类视频卡片
-                continue;
-        }
-        //会员专享
-        const vipEl = el.querySelector('.badge-style-type-members-only')
         const titleContainerEl = el.querySelector('yt-lockup-metadata-view-model,#meta');
         if (titleContainerEl === null) {
             // console.warn('标题容器元素未找到', el, titleContainerEl);
@@ -47,39 +41,50 @@ const getVideoDataList = async () => {
         const titleAEl = titleContainerEl.querySelector('.yt-lockup-metadata-view-model__title,#video-title-link');
         //如果是合辑时userAEl值为null
         const userAEl = titleContainerEl.querySelector('a.yt-core-attributed-string__link.yt-core-attributed-string__link--call-to-action-color.yt-core-attributed-string--link-inherit-color,ytd-channel-name a[href^="/@"]');
-        if (userAEl === null) {
-            // console.warn('疑似合辑内容', el, userAEl);
-            continue;
-        }
-        let insertionPositionEl;
+        let view = -1, duration = -1, insertionPositionEl, userId = null, userName = null,
+            userUrl = null, channelId = null, compilationId = null, userNameList = null;
+        //会员专享
+        const vipEl = el.querySelector('.badge-style-type-members-only')
         if (vipEl) {
             insertionPositionEl = titleContainerEl
         } else {
             insertionPositionEl = el.querySelector('.yt-lockup-view-model__metadata');
         }
-        let view = -1, duration = -1;
-        if (durationTxt !== '即将开始' && durationTxt !== '直播') {
+        if (durationTxt.includes(':')) {
             const viewEl = insertionPositionEl.querySelector('.yt-content-metadata-view-model__metadata-row:last-child>span:first-child')
             if (viewEl) {
                 const viewTxt = viewEl.textContent.trim();
                 view = strUtil.parseView(viewTxt);
             }
             duration = strUtil.timeStringToSeconds(durationTxt);
-        }
-        const userName = userAEl.textContent.trim();
-        const userUrl = decodeURI(userAEl.href);
-        //频道id
-        const channelId = urlUtil.getUrlChannelId(userUrl);
-        let userId = null;
-        if (channelId === null) {
-            userId = urlUtil.getUrlUserId(userUrl);
+            userName = userAEl.textContent.trim();
+            userUrl = decodeURI(userAEl.href);
+            channelId = urlUtil.getUrlChannelId(userUrl);
+            if (channelId === null) {
+                userId = urlUtil.getUrlUserId(userUrl);
+            }
         }
         const videoAddress = titleAEl.href;
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const title = titleAEl.textContent.trim();
+        if (durationTxt === '合辑') {
+            compilationId = urlUtil.getUrlCompilationId(videoAddress);
+            const namesEl = titleContainerEl.querySelector('.yt-content-metadata-view-model__metadata-row:first-child>span');
+            const namesStr = namesEl?.textContent.trim() ?? null;
+            if (namesStr) {
+                userNameList = [];
+                for (const name of namesStr.split('、')) {
+                    if (name.endsWith('等')) {
+                        userNameList.push(name.substring(0, name.length - 1));
+                    } else {
+                        userNameList.push(name);
+                    }
+                }
+            }
+        }
         list.push({
             el, title, userId, channelId, durationTxt, duration, videoAddress, userName, userUrl, videoId,
-            insertionPositionEl, explicitSubjectEl: insertionPositionEl, view
+            insertionPositionEl, explicitSubjectEl: insertionPositionEl, view, compilationId, userNameList
         })
     }
     startHomeShortsItemDisplay();

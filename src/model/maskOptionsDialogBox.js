@@ -3,7 +3,7 @@ import ruleUtil from "../utils/ruleUtil.js";
 import gmUtil from "../utils/gmUtil.js";
 
 eventEmitter.on('event:mask_options_dialog_box', (data) => {
-    const {userId, channelId, userName, videoId} = data;
+    const {userId, channelId, userName, videoId, userNameList} = data;
     const showList = []
     if (userId) {
         showList.push({label: `用户id精确屏蔽=${userId}`, value: 'userId_precise'})
@@ -13,7 +13,14 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
         showList.push({label: `频道id精确屏蔽=${channelId}`, value: 'channelId_precise'});
         showList.push({label: '新标签跳转到频道主页', value: 'to_channelId_precise'})
     }
-    if (userName) showList.push({label: `用户名精确屏蔽=${userName}`, value: 'username_precise'});
+    if (userName) {
+        showList.push({label: `用户名精确屏蔽=${userName}`, value: 'username_precise'});
+    }
+    if (userNameList) {
+        for (const n of userNameList) {
+            showList.push({label: `用户名模糊屏蔽=${n}`, value: 'username_precise'})
+        }
+    }
     if (videoId) {
         showList.push({label: `视频id精确屏蔽=${videoId}`, value: 'videoId_precise'});
         showList.push({label: '新标签跳转到视频主页', value: 'to_videoId_precise'})

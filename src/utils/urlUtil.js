@@ -67,6 +67,15 @@ const parseUrl = (urlString) => {
     };
 }
 
+//获取url中的合辑id
+const getUrlCompilationId = (url) => {
+    if (url.includes('https://www.youtube.com/watch?v=')) {
+        return parseUrl(url).queryParams['list']
+    }
+    return null;
+}
+
+
 export default {
-    getUrlChannelId, getUrlUserId, getUrlVideoId, parseUrl
+    getUrlChannelId, getUrlUserId, getUrlVideoId, parseUrl, getUrlCompilationId
 }

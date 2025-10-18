@@ -49,6 +49,9 @@ const getVideoDataList = async () => {
             insertionPositionEl = titleContainerEl
         } else {
             insertionPositionEl = el.querySelector('.yt-lockup-view-model__metadata');
+            if (insertionPositionEl === null) {
+                insertionPositionEl = titleContainerEl;
+            }
         }
         if (durationTxt.includes(':')) {
             const viewEl = insertionPositionEl.querySelector('.yt-content-metadata-view-model__metadata-row:last-child>span:first-child')
@@ -81,6 +84,10 @@ const getVideoDataList = async () => {
                     }
                 }
             }
+        }
+        //卡片内容为播放列表
+        if (durationTxt.endsWith('个视频')) {
+            debugger//待后续完善
         }
         list.push({
             el, title, userId, channelId, durationTxt, duration, videoAddress, userName, userUrl, videoId,

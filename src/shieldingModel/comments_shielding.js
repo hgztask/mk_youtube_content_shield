@@ -1,6 +1,7 @@
 import {returnTempVal} from "../data/globalValue.js";
 import shielding, {blockUserId, blockUserName} from "./shielding.js";
 import {blockChannelId} from "./video_shielding.js";
+import {eventEmitter} from "../model/EventEmitter.js";
 
 //根据评论内容检查屏蔽
 const blockComment = (comment) => {
@@ -33,18 +34,23 @@ const shieldingComment = (commentsData) => {
 
 //屏蔽评论项-包装类
 const shieldingCommentDecorated = async (commentData) => {
-    const {state, type, matching, el} = shieldingComment(commentData);
+    const testResults = shieldingComment(commentData);
+    const {state, type, matching, el} = testResults;
     if (state) {
-        console.log(`根据【${type}】规则【${matching}】屏蔽评论`, commentData)
+        commentData.testResults = testResults;
+        const {content} = commentData;
+        eventEmitter.send('event:print-msg', {msg: `${type}规则【${matching}】屏蔽评论【${content}】`, data: commentData})
         el.remove();
         return
     }
     const list = [];
     list.push(commentData);
     for (const replyData of commentData.reply) {
-        const {state, type, matching, el} = shieldingComment(replyData)
+        const testResults = shieldingComment(replyData);
+        const {state, type, matching, el} = testResults
         if (state) {
-            console.log(`根据【${type}】规则【${matching}】屏蔽评论`, replyData)
+            replyData.testResults = testResults;
+            eventEmitter.send('event:print-msg', {msg: `根据【${type}】规则【${matching}】屏蔽评论`, data: replyData})
             el.remove();
             continue;
         }

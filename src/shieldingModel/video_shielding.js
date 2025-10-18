@@ -91,7 +91,8 @@ const shieldingVideoDecorated = async (videoData) => {
     const {state, type, matching} = testResults;
     if (state) {
         videoData['testResults'] = testResults;
-        eventEmitter.send('event:print-msg', {msg: `根据【${type}】规则【${matching}】屏蔽视频`, data: testResults})
+        const {title} = videoData
+        eventEmitter.send('event:print-msg', {msg: `${type}规则【${matching}】屏蔽视频【${title}】`, data: videoData})
         videoData.el.remove();
         return
     }

@@ -28,8 +28,6 @@ const getPodcastsList = async () => {
     return pageCommon.getMetaVideoList(els);
 }
 
-window.getPodcastsList = getPodcastsList;
-
 //间隔检查博客内容列表
 const intervalPodcastsListExecutor = new IntervalExecutor(async () => {
     const list = await getPodcastsList();

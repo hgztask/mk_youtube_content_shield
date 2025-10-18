@@ -42,7 +42,6 @@ import PanelSettingsView from "./views/PanelSettingsView.vue";
 import AboutAndFeedbackView from "./views/AboutAndFeedbackView.vue";
 import ShowImgDialog from "./eventEmitter_components/ShowImgDialog.vue";
 import DonateLayoutView from "./views/DonateLayoutView.vue";
-import playerPage from "./pagesModel/playerPage.js";
 import SheetDialog from "./eventEmitter_components/SheetDialog.vue";
 import PageProcessingView from "./views/PageProcessingView.vue";
 import DetectionStatusView from "./views/DetectionStatusView.vue";
@@ -65,12 +64,8 @@ export default {
     test1But() {
     },
     test2But() {
-      playerPage.getRightVideoList().then(elList => {
-        console.log(elList);
-      })
     },
     test3But() {
-      playerPage.checkChatMsgListBlock();
     }
   },
   created() {

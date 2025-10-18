@@ -36,9 +36,10 @@ const getMetaVideoList = (elList) => {
         const userUrl = userAEl.href;
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const userId = urlUtil.getUrlUserId(userUrl);
+        const userName = userAEl.textContent.trim();
         list.push({
             el, title, view, userId, videoAddress, userUrl, duration, videoId,
-            insertionPositionEl, explicitSubjectEl, durationTxt
+            insertionPositionEl, explicitSubjectEl, durationTxt, userName
         });
     }
     return list;

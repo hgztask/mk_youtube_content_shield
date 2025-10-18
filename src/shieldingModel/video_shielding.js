@@ -87,15 +87,16 @@ const shieldingVideo = (videoData) => {
  * @param videoData {{}} 视频数据
  */
 const shieldingVideoDecorated = async (videoData) => {
-    const {state, type, matching} = shieldingVideo(videoData);
+    const testResults = shieldingVideo(videoData);
+    const {state, type, matching} = testResults;
     if (state) {
-        console.log(`根据【${type}】规则【${matching}】屏蔽视频`, videoData)
+        videoData['testResults'] = testResults;
+        eventEmitter.send('event:print-msg', {msg: `根据【${type}】规则【${matching}】屏蔽视频`, data: testResults})
         videoData.el.remove();
         return
     }
     return promiseReject
 }
-
 
 export default {
     shieldingVideoDecorated

@@ -2,14 +2,17 @@
   <div>
     <el-drawer :visible.sync="drawer"
                title="油管屏蔽器"
-               :z-index="2050"
+               :z-index="2050" size="35%"
                style="position: fixed;">
-      <el-tabs tab-position="left" type="border-card">
+      <el-tabs tab-position="left" type="card">
         <el-tab-pane lazy label="规则管理">
           <RuleManagementView/>
         </el-tab-pane>
         <el-tab-pane lazy label="页面处理">
           <PageProcessingView/>
+        </el-tab-pane>
+        <el-tab-pane label="输出信息" lazy>
+          <OutputInformationView/>
         </el-tab-pane>
         <el-tab-pane label="检测状态" lazy>
           <DetectionStatusView/>
@@ -43,9 +46,11 @@ import playerPage from "./pagesModel/playerPage.js";
 import SheetDialog from "./eventEmitter_components/SheetDialog.vue";
 import PageProcessingView from "./views/PageProcessingView.vue";
 import DetectionStatusView from "./views/DetectionStatusView.vue";
+import OutputInformationView from "./views/OutputInformationView.vue";
 
 export default {
   components: {
+    OutputInformationView,
     ShowImgDialog, RuleManagementView, PanelSettingsView, AboutAndFeedbackView, DonateLayoutView,
     SheetDialog, PageProcessingView, DetectionStatusView
   },

@@ -23,7 +23,7 @@ const staticRoute = (title, url) => {
     console.log('静态路由', title, url, parseUrl);
     if (homePage.isHomeUrlPage()) {
         console.log('youtube首页')
-        homePage.run();
+        homePage.intervalCheckHomeVideoList.start();
     }
     if (playerPage.isUrlPage(url)) {
         console.log('播放页or直播页')

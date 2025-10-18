@@ -10,11 +10,6 @@ const isHomeUrlPage = () => {
     return window.location.href === 'https://www.youtube.com/';
 }
 
-//获取左侧激活菜单项文本
-const getLeftActiveItemText = () => {
-    return document.body.querySelector("#sections ytd-guide-entry-renderer[active]").textContent.trim() ?? null;
-}
-
 /**
  * 获取首页中视频列表数据
  * 排除合辑和直播类
@@ -159,12 +154,7 @@ const startHomeShortsItemDisplay = () => {
     }
 }
 
-const run = () => {
-    intervalCheckHomeVideoList.start();
-}
-
 export default {
-    isHomeUrlPage, run, startHomeShortsItemDisplay,
-    getLeftActiveItemText,
+    isHomeUrlPage, startHomeShortsItemDisplay,
     intervalCheckHomeVideoList,
 }

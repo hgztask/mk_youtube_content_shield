@@ -11,6 +11,7 @@ import learningPage from "./pagesModel/learningPage.js";
 import sportsPage from "./pagesModel/sportsPage.js";
 import fashionPage from "./pagesModel/fashionPage.js";
 import podcastsPage from "./pagesModel/podcastsPage.js";
+import hashTagPage from "./pagesModel/hashTagPage.js";
 
 /**
  * 静态路由
@@ -69,6 +70,10 @@ const staticRoute = (title, url) => {
         console.log('博客页')
         podcastsPage.intervalPodcastsListExecutor.start()
     }
+    if (hashTagPage.isUrlPage(url)) {
+        console.log('hashtag页面')
+        hashTagPage.intervalTagVideoListExecutor.start()
+    }
     userSpacePage.addShieldButton();
     /*
     elUtil.findElement('#sections ytd-guide-section-renderer:first-child #items>ytd-guide-entry-renderer:first-child').then(el => {
@@ -112,6 +117,7 @@ const dynamicRoute = (title, url) => {
     }
     if (userSpacePage.isUserSpacePage(url)) {
         console.log('用户空间主页')
+        userSpacePage.addShieldButton();
     }
     if (gamingPage.isUrlPage(url)) {
         gamingPage.intervalCheckGamingVideoList.start();
@@ -126,6 +132,7 @@ const dynamicRoute = (title, url) => {
     }
     if (channelPage.isUrlPage(url)) {
         channelPage.dynamicRun(parseUrl);
+        userSpacePage.addShieldButton();
     } else {
         channelPage.intervalChannelPageVideoAndLiveListExecutor.stop();
     }
@@ -149,7 +156,11 @@ const dynamicRoute = (title, url) => {
     } else {
         podcastsPage.intervalPodcastsListExecutor.stop()
     }
-    userSpacePage.addShieldButton();
+    if (hashTagPage.isUrlPage(url)) {
+        hashTagPage.intervalTagVideoListExecutor.start()
+    } else {
+        hashTagPage.intervalTagVideoListExecutor.stop();
+    }
 }
 
 //页面加载完之后的静态路由

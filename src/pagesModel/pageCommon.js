@@ -18,7 +18,7 @@ const getMetaVideoList = (elList) => {
         const viewEl = insertionPositionEl.querySelector('#metadata-line>span')
         const durationEl = el.querySelector('.yt-badge-shape__text');
         const durationTxt = durationEl ? durationEl.textContent.trim() : null;
-        let duration = -1, view = -1;
+        let duration = -1, view = -1, channelId = null;
         if (durationEl) {
             if (durationTxt.includes(':')) {
                 duration = strUtil.timeStringToSeconds(durationTxt);
@@ -36,10 +36,13 @@ const getMetaVideoList = (elList) => {
         const userUrl = userAEl.href;
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const userId = urlUtil.getUrlUserId(userUrl);
+        if (userId === null) {
+            channelId = urlUtil.getUrlChannelId(userUrl)
+        }
         const userName = userAEl.textContent.trim();
         list.push({
             el, title, view, userId, videoAddress, userUrl, duration, videoId,
-            insertionPositionEl, explicitSubjectEl, durationTxt, userName
+            insertionPositionEl, explicitSubjectEl, durationTxt, userName, channelId
         });
     }
     return list;

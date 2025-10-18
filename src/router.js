@@ -15,6 +15,7 @@ import hashTagPage from "./pagesModel/hashTagPage.js";
 import coursesPage from "./pagesModel/coursesPage.js";
 import newsPage from "./pagesModel/newsPage.js";
 import historyPage from "./pagesModel/historyPage.js";
+import watchLaterAwesomeVideoPage from "./pagesModel/watchLaterAwesomeVideoPage.js";
 
 /**
  * 静态路由
@@ -87,6 +88,9 @@ const staticRoute = (title, url) => {
     }
     if (historyPage.isUrlPage(url)) {
         historyPage.intervalHistoryVideoListExecutor.start();
+    }
+    if (watchLaterAwesomeVideoPage.isUrlPage(url)) {
+        watchLaterAwesomeVideoPage.intervalExecutor.start();
     }
     userSpacePage.addShieldButton();
     /*
@@ -189,6 +193,11 @@ const dynamicRoute = (title, url) => {
         historyPage.intervalHistoryVideoListExecutor.start();
     } else {
         historyPage.intervalHistoryVideoListExecutor.stop();
+    }
+    if (watchLaterAwesomeVideoPage.isUrlPage(url)) {
+        watchLaterAwesomeVideoPage.intervalExecutor.start();
+    } else {
+        watchLaterAwesomeVideoPage.intervalExecutor.stop();
     }
 }
 

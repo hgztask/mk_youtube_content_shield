@@ -17,6 +17,8 @@ export class IntervalExecutor {
      * @param func {function} 异步执行函数
      * @param config {{}} 配置项
      * @param config.timeout {number} 间隔时间
+     * @param config.processTips {boolean} 是否打印执行信息
+     * @param config.intervalName {string} 间隔名称
      */
     constructor(func, config = {}) {
         const defConfig = {timeout: 2000, processTips: false, intervalName: null}

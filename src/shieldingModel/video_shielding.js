@@ -4,6 +4,7 @@ import {promiseReject, returnTempVal} from "../data/globalValue.js";
 import shielding, {blockUserId, blockUserName} from "./shielding.js";
 import ruleMatchingUtil from "../utils/ruleMatchingUtil.js";
 import gmUtil from "../utils/gmUtil.js";
+import ruleKeyListDataJson from '../res/ruleKeyListDataJson.json'
 
 //根据标题检查屏蔽
 export const blockTitle = (title) => {
@@ -27,6 +28,47 @@ export const blockChannelId = (id) => {
         return {state: true, type: '精确频道id', matching: id};
     }
     return returnTempVal;
+}
+
+//检查关联规则屏蔽
+const blockRelationRule = (type, oneV, twoV) => {
+    if (oneV === null || oneV === undefined || oneV === '' || twoV === null || twoV === undefined || twoV === '') {
+        return returnTempVal;
+    }
+    const typeRuleList = gmUtil.getData(type, []);
+    if (typeRuleList.length === 0) {
+        return returnTempVal;
+    }
+    const item = ruleKeyListDataJson.find(item => item.key === type);
+    for (const fragment of typeRuleList) {
+        const fragmentsSplit = fragment.split('|');
+        const [fragmentOneV, fragmentsTwoV] = fragmentsSplit;
+        const verify = oneV ?? twoV;
+        if (verify) {
+            if (oneV === fragmentOneV) {
+                return {state: true, type: item.name, matching: twoV, pattern: '关联'};
+            }
+            if (oneV === fragmentsTwoV) {
+                return {state: true, type: item.name, matching: oneV, pattern: '关联'};
+            }
+        }
+    }
+    return returnTempVal;
+}
+
+//检查用户ID关联用户名屏蔽
+export const blockUserIDAssociatedWithUserName = (userId, UserName) => {
+    return blockRelationRule('userId_userName', userId, UserName)
+}
+
+//检查用户ID关联频道ID屏蔽
+export const blockUserIdAssociatedWithChannelId = (userId, channelId) => {
+    return blockRelationRule('userId_channelId', userId, channelId)
+}
+
+//检查用户名关联频道ID屏蔽
+export const blockUserNameAssociatedWithChannelId = (userName, channelId) => {
+    return blockRelationRule('userName_channelId', userName, channelId)
 }
 
 eventEmitter.on('event:插入屏蔽按钮', (videoOrCommentData) => {
@@ -78,6 +120,12 @@ const shieldingVideo = (videoData) => {
     if (res.state) return res;
     res = blockChannelId(channelId);
     if (res.state) return res;
+    res = blockUserIDAssociatedWithUserName(userId, userName);
+    if (res.state) return res;
+    res = blockUserIdAssociatedWithChannelId(userId, channelId);
+    if (res.state) return res;
+    res = blockUserNameAssociatedWithChannelId(userName, channelId);
+    if (res.state) return res;
     //表面放行该内容
     return returnTempVal;
 }
@@ -100,5 +148,6 @@ const shieldingVideoDecorated = async (videoData) => {
 }
 
 export default {
-    shieldingVideoDecorated
+    shieldingVideoDecorated,
+    blockRelationRule
 }

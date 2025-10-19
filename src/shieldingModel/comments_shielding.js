@@ -1,6 +1,11 @@
 import {returnTempVal} from "../data/globalValue.js";
 import shielding, {blockUserId, blockUserName} from "./shielding.js";
-import {blockChannelId} from "./video_shielding.js";
+import {
+    blockChannelId,
+    blockUserIdAssociatedWithChannelId,
+    blockUserIDAssociatedWithUserName,
+    blockUserNameAssociatedWithChannelId
+} from "./video_shielding.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 
 //根据评论内容检查屏蔽
@@ -28,6 +33,12 @@ const shieldingComment = (commentsData) => {
     returnVal = blockUserId(userId);
     if (returnVal.state) return returnVal;
     returnVal = blockChannelId(channelId);
+    if (returnVal.state) return returnVal;
+    returnVal = blockUserIDAssociatedWithUserName(userId, userName);
+    if (returnVal.state) return returnVal;
+    returnVal = blockUserIdAssociatedWithChannelId(userId, channelId);
+    if (returnVal.state) return returnVal;
+    returnVal = blockUserNameAssociatedWithChannelId(userName, channelId);
     if (returnVal.state) return returnVal;
     return returnTempVal
 }

@@ -77,24 +77,24 @@ export default {
                  :props="{ expandTrigger: 'hover' }" :show-all-levels="true"
                  filterable @change="handleChangeCascader"/>
     <el-divider/>
-    <el-row>
-      <el-col :span="12">
-        <el-button-group>
-          <el-button @click="batchAddBut">批量添加</el-button>
-          <el-button @click="setRuleBut">修改</el-button>
-          <el-button @click="findItemAllBut">查看项内容</el-button>
-          <el-button @click="delBut">移除</el-button>
-        </el-button-group>
-      </el-col>
-      <el-col :span="12">
-        <div class="el-horizontal-right">
-          <el-button-group>
-            <el-button type="danger" @click="clearItemRuleBut">清空项</el-button>
-            <el-button type="danger" @click="delAllBut">全部移除</el-button>
-          </el-button-group>
-        </div>
-      </el-col>
-    </el-row>
+    <el-button-group>
+      <el-button @click="batchAddBut">批量添加</el-button>
+      <el-button @click="setRuleBut">修改</el-button>
+      <el-button @click="findItemAllBut">查看项内容</el-button>
+      <el-button @click="delBut">移除</el-button>
+    </el-button-group>
+    <el-button-group>
+      <el-button type="danger" @click="clearItemRuleBut">清空项</el-button>
+      <el-button type="danger" @click="delAllBut">全部移除</el-button>
+    </el-button-group>
+    <el-card shadow="never">
+      <template #header>说明</template>
+      <div>1.规则的值唯一，且不重复。</div>
+      <div>2.关联规则值同上，是双向关联关系。</div>
+      <div>
+        2.关联规则中某种类型的值颠倒顺序，也视为同一个，等于颠倒后的结果，比如用户id关联用户名中的@ikun|爱坤等于@iKun|爱坤
+      </div>
+    </el-card>
     <AddRuleDialog v-model="addRuleDialogVisible" :rule-info="addRuleDialogRuleInfo"/>
     <RuleSetValueDialog/>
     <ViewRulesRuleDialog/>

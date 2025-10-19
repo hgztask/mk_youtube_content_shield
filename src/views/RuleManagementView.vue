@@ -91,8 +91,14 @@ export default {
       <template #header>说明</template>
       <div>1.规则的值唯一，且不重复。</div>
       <div>2.关联规则值同上，是双向关联关系。</div>
+      <div>3.关联规则分割的两方为精确匹配</div>
       <div>
-        2.关联规则中某种类型的值颠倒顺序，也视为同一个，等于颠倒后的结果，比如用户id关联用户名中的@ikun|爱坤等于@iKun|爱坤
+        4.关联规则中某种类型的值颠倒顺序，也视为同一个，等于颠倒后的结果，比如用户id关联用户名中的@ikun|爱坤等于@iKun|爱坤
+      </div>
+      <div>
+        <el-link href="https://www.jyshare.com/front-end/854/" target="_blank" type="primary">
+          5.正则表达式测试地址
+        </el-link>
       </div>
     </el-card>
     <AddRuleDialog v-model="addRuleDialogVisible" :rule-info="addRuleDialogRuleInfo"/>

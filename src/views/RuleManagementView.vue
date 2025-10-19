@@ -73,7 +73,7 @@ export default {
 
 <template>
   <div>
-    <el-cascader v-model="cascaderVal" :options="cascaderOptions"
+    <el-cascader v-model="cascaderVal" :options="cascaderOptions" style="width: 100%"
                  :props="{ expandTrigger: 'hover' }" :show-all-levels="true"
                  filterable @change="handleChangeCascader"/>
     <el-divider/>

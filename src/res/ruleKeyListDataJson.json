@@ -48,5 +48,20 @@
     "name": "评论",
     "key": "comment_regex",
     "pattern": "正则"
+  },
+  {
+    "name": "用户ID关联用户名",
+    "key": "userId_username",
+    "pattern": "关联"
+  },
+  {
+    "name": "用户ID关联频道ID",
+    "key": "userId_channelId",
+    "pattern": "关联"
+  },
+  {
+    "name": "用户名关联频道ID",
+    "key": "username_channelId",
+    "pattern": "关联"
   }
 ]

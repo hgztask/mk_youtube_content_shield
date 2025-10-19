@@ -1,10 +1,8 @@
 <script>
-
-
-//多重规则编辑对话框
 import gmUtil from "../utils/gmUtil.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 
+//查看规则内容编辑对话框
 export default {
   data() {
     return {
@@ -27,7 +25,7 @@ export default {
         this.showTags.splice(index, 1)
         gmUtil.setData(this.typeMap.key, this.showTags);
         this.$message.success(`已移除 ${tag}`)
-        eventEmitter.send('刷新规则信息', false)
+        eventEmitter.emit('event:刷新规则信息', false)
       })
     },
     closedHandle() {

@@ -7,11 +7,12 @@ import RuleSetValueDialog from "../eventEmitter_components/RuleSetValueDialog.vu
 import ViewRulesRuleDialog from "../eventEmitter_components/ViewRulesRuleDialog.vue";
 import ruleUtil from "../utils/ruleUtil.js";
 import gmUtil from "../utils/gmUtil.js";
+import RuleInformationView from "./RuleInformationView.vue";
 
 const ruleInfoArr = ruleKeyListDataJson;
 
 export default {
-  components: {AddRuleDialog, RuleSetValueDialog, ViewRulesRuleDialog},
+  components: {AddRuleDialog, RuleSetValueDialog, ViewRulesRuleDialog, RuleInformationView},
   data() {
     return {
       cascaderVal: ['精确匹配', 'userId_precise'],
@@ -60,7 +61,7 @@ export default {
           gmUtil.delData(x.key);
         }
         this.$message.success("删除全部规则成功");
-        // eventEmitter.send('刷新规则信息', false);
+        eventEmitter.emit('刷新规则信息', false);
       })
     }
   },
@@ -101,6 +102,7 @@ export default {
         </el-link>
       </div>
     </el-card>
+    <RuleInformationView/>
     <AddRuleDialog v-model="addRuleDialogVisible" :rule-info="addRuleDialogRuleInfo"/>
     <RuleSetValueDialog/>
     <ViewRulesRuleDialog/>

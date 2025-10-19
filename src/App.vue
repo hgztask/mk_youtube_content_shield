@@ -25,10 +25,13 @@
           <DonateLayoutView/>
         </el-tab-pane>
       </el-tabs>
+      <div v-if="dev">
+
       <el-button @click="testBut">测试1</el-button>
       <el-button @click="test1But">测试获取直播页弹幕列表</el-button>
       <el-button @click="test2But">测试获取播放页右侧视频列表</el-button>
       <el-button @click="test3But">检查播放页聊天弹幕屏蔽</el-button>
+      </div>
     </el-drawer>
     <ShowImgDialog/>
     <SheetDialog/>
@@ -55,7 +58,8 @@ export default {
   },
   data() {
     return {
-      drawer: false
+      drawer: false,
+      dev: __DEV__
     }
   },
   methods: {

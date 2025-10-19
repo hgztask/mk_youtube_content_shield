@@ -108,7 +108,7 @@ const showDelRuleInput = async (type) => {
     }
     const {status, res} = delRule(type, ruleValue)
     eventEmitter.send('el-msg', res)
-    // status && eventEmitter.send('刷新规则信息');
+    status && eventEmitter.emit('event:刷新规则信息', false);
 }
 
 /**
@@ -149,7 +149,7 @@ const batchAddRelationRule = (type, fragments) => {
     const successList = [];
     const failList = [];
     const gmData = gmUtil.getData(type, []);
-    for (let fragment of fragments) {
+    for (const fragment of fragments) {
         const fragmentsSplit = fragment.split('|');
         if (fragmentsSplit.length !== 2 || fragmentsSplit.some(item => item.trim() === '')) {
             failList.push({fragment, msg: '非法的关联规则，只要求一个|，或内容不可为空，请检查输入'});

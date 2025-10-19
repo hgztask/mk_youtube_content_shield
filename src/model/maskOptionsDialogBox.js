@@ -64,7 +64,7 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
             }
             if (results) {
                 const msg = results.res ? results.res : results.msg;
-                results && eventEmitter.send('el-msg', msg)
+                eventEmitter.send('el-msg', msg).emit('event:刷新规则信息', false)
             }
         }
     })

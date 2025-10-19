@@ -1,6 +1,7 @@
 <script>
 import ruleUtil from "../utils/ruleUtil.js";
 import ruleKeyListDataJson from '../res/ruleKeyListDataJson.json'
+import {eventEmitter} from "../model/EventEmitter.js";
 
 export default {
   props: {
@@ -52,6 +53,7 @@ export default {
             message += `失败项${failList.length}个:${failMsg}`;
           }
           this.$alert(message, '操作成功')
+          eventEmitter.emit('event:刷新规则信息', false);
         } else {
           this.$alert(`失败项${failList.length}个:${failList[0].msg}`, '操作失败')
         }
@@ -61,6 +63,9 @@ export default {
       this.$alert(`成功项${successList.length}个:${successList.join(this.separator)}\n
                 失败项${failList.length}个:${failList.join(this.separator)}
                 `, 'tip')
+      if (successList.length > 0) {
+        eventEmitter.emit('event:刷新规则信息', false);
+      }
       if (successList.length > 0 && this.successAfterCloseVal) {
         this.dialogVisible = false
       }

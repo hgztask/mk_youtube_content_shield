@@ -48,6 +48,7 @@ export default {
                 ],
                 // ✅ 关键：声明 GM 全局变量
                 globals: {
+                    __DEV__: 'readonly',
                     GM_setValue: 'readonly',
                     GM_getValue: 'readonly',
                     GM_deleteValue: 'readonly',

@@ -25,6 +25,15 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
         showList.push({label: `视频id精确屏蔽=${videoId}`, value: 'videoId_precise'});
         showList.push({label: '新标签跳转到视频主页', value: 'to_videoId_precise'})
     }
+    if (userId && userName) {
+        showList.push({label: `用户Id关联用户名屏蔽=${userId}|${userName}`, value: 'userIdAndUserName'})
+    }
+    if (userId && channelId) {
+        showList.push({label: `用户Id关联频道Id屏蔽=${userId}|${channelId}`, value: 'userIdAndChannelId'})
+    }
+    if (userName && channelId) {
+        showList.push({label: `用户名关联频道Id屏蔽=${userName}|${channelId}`, value: 'userNameAndChannelId'})
+    }
     eventEmitter.send('sheet-dialog', {
         title: "屏蔽选项",
         list: showList,
@@ -43,11 +52,20 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
                 gmUtil.openInTab('https://www.youtube.com/watch?v=' + videoId);
             } else if (value === 'to_channelId_precise') {
                 gmUtil.openInTab('https://www.youtube.com/' + channelId);
+            } else if (value === 'userIdAndUserName') {
+                results = ruleUtil.addRelationRule('userId_username', `${userName}|${userName}`);
+            } else if (value === 'userIdAndChannelId') {
+                results = ruleUtil.addRelationRule('userId_channelId', `${userId}|${channelId}`)
+            } else if (value === 'userNameAndChannelId') {
+                results = ruleUtil.addRelationRule('username_channelId', `${userName}|${channelId}`)
             } else {
                 eventEmitter.send('el-msg', "出现意外的选项值");
                 return
             }
-            results && eventEmitter.send('el-msg', results.res)
+            if (results) {
+                const msg = results.res ? results.res : results.msg;
+                results && eventEmitter.send('el-msg', msg)
+            }
         }
     })
 })

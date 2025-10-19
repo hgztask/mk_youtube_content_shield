@@ -64,7 +64,7 @@ const getLetsPlayVideoList = async () => {
         const userId = urlUtil.getUrlUserId(userUrl);
         const userName = userAEl.textContent.trim();
         const playListAEl = bottomInfoEl.querySelector('a[href^="/playlist?list="]');
-        const playListUrl = decodeURI(playListAEl.href);
+        const playListUrl = playListAEl.href;
         list.push({
             insertionPositionEl: metadataEl, explicitSubjectEl: metadataEl,
             el, title, videoAddress, videoId, userId, userName, userUrl, playListUrl

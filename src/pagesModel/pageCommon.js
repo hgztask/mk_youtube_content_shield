@@ -5,12 +5,6 @@ import urlUtil from "../utils/urlUtil.js";
 const getMetaVideoList = (elList) => {
     const list = [];
     for (const el of elList) {
-        //该属性目前可知可用于确认是否是博客竖向的卡片内容，其他情待确认
-        //后面可以考虑直接在博客页面中定位时排除先
-        const isResponsiveGrid = el.getAttribute('is-responsive-grid');
-        if (isResponsiveGrid === 'EXTRA_COMPACT') {
-            continue;
-        }
         const explicitSubjectEl = el.querySelector('#meta');
         const insertionPositionEl = el.querySelector('#metadata');
         const titleAEl = explicitSubjectEl.querySelector('a#video-title-link,a#video-title')

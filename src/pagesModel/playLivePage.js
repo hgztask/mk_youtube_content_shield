@@ -11,7 +11,11 @@ import {IntervalExecutor} from "../model/IntervalExecutor.js";
  * @returns {Promise<boolean>}
  */
 const isLivePage = async () => {
-    let el = await elUtil.findElement('#view-count[aria-label]');
+    let el = await elUtil.findElement('#chatframe', {timeout: 2500});
+    if (el !== null) {
+        return true;
+    }
+    el = await elUtil.findElement('#view-count[aria-label]');
     const ariaLabel = el.getAttribute('aria-label');
     if (ariaLabel !== '') {
         return true;

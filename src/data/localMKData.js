@@ -15,3 +15,7 @@ export const isDelHomeShortsItemGm= () => {
 export const isDelLiveHomeTopBannerGm = () => {
     return gmUtil.getData('is_del_live_home_top_banner_gm', true)
 }
+
+export const isDelVideoPageSponsoredAdsGm = () => {
+    return gmUtil.getData('is_del_video_page_sponsored_ads_gm', false)
+}

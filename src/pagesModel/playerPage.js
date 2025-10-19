@@ -6,8 +6,9 @@ import video_shielding from "../shieldingModel/video_shielding.js";
 import urlUtil from "../utils/urlUtil.js";
 import comments_shielding from "../shieldingModel/comments_shielding.js";
 import playLivePage from "./playLivePage.js";
+import {isDelVideoPageSponsoredAdsGm} from "../data/localMKData.js";
 
-const isUrlPage = (url) => {
+const isUrlPage = (url = location.href) => {
     return url.includes('://www.youtube.com/watch?v=')
 }
 
@@ -167,8 +168,18 @@ const addShieldButton = () => {
     })
 }
 
+//检查右侧播放列表赞助商广告
+const checkRightVideoListAd = () => {
+    if (!isDelVideoPageSponsoredAdsGm()) return;
+    elUtil.findElement('#player-ads').then(el => {
+        el.remove();
+        eventEmitter.send('event:print-msg', '已删除视频页右侧视频列表上方赞助商广告');
+    })
+}
+
+
 //视频页和直播页
 export default {
     isUrlPage, getRightVideoList, intervalCheckPlayerVideoList, addShieldButton,
-    intervalCheckCommentList
+    intervalCheckCommentList, checkRightVideoListAd
 }

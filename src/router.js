@@ -35,6 +35,7 @@ const staticRoute = (title, url) => {
         playerPage.intervalCheckCommentList.start()
         playLivePage.intervalChatMsgListBlockExecutor.start();
         playerPage.addShieldButton();
+        playerPage.checkRightVideoListAd();
     }
     if (userSpacePage.isUserSpacePage(url)) {
         console.log('用户空间主页')
@@ -116,6 +117,7 @@ const dynamicRoute = (title, url) => {
         playerPage.intervalCheckCommentList.start();
         playLivePage.intervalChatMsgListBlockExecutor.start();
         playerPage.addShieldButton();
+        playerPage.checkRightVideoListAd();
     } else {
         playerPage.intervalCheckPlayerVideoList.stop();
         playerPage.intervalCheckCommentList.stop();

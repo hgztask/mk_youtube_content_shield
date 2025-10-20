@@ -16,6 +16,7 @@ import coursesPage from "./pagesModel/coursesPage.js";
 import newsPage from "./pagesModel/newsPage.js";
 import historyPage from "./pagesModel/historyPage.js";
 import watchLaterAwesomeVideoPage from "./pagesModel/watchLaterAwesomeVideoPage.js";
+import postPage from "./pagesModel/postPage.js";
 
 /**
  * 静态路由
@@ -92,6 +93,10 @@ const staticRoute = (title, url) => {
     }
     if (watchLaterAwesomeVideoPage.isUrlPage(url)) {
         watchLaterAwesomeVideoPage.intervalExecutor.start();
+    }
+    if (postPage.isUrlPage(url)) {
+        console.log('帖子页')
+        postPage.intervalPostCommentsListExecutor.start();
     }
     userSpacePage.addShieldButton();
     /*
@@ -200,6 +205,11 @@ const dynamicRoute = (title, url) => {
         watchLaterAwesomeVideoPage.intervalExecutor.start();
     } else {
         watchLaterAwesomeVideoPage.intervalExecutor.stop();
+    }
+    if (postPage.isUrlPage(url)) {
+        postPage.intervalPostCommentsListExecutor.start();
+    } else {
+        postPage.intervalPostCommentsListExecutor.stop();
     }
 }
 

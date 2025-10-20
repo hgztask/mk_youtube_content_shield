@@ -42,6 +42,40 @@ const getMetaVideoList = (elList) => {
     return list;
 }
 
+//提取评论区评论列表
+const extractCommentList = async (els) => {
+    const list = [];
+    for (const el of els) {
+        //跳过加载更多
+        if (el.tagName === 'YTD-CONTINUATION-ITEM-RENDERER') continue;
+        const mainEl = el.querySelector('#comment #main');
+        const userIdEl = mainEl.querySelector('a#author-text');
+        const contentEl = mainEl.querySelector('#content-text');
+        const replies = el.querySelectorAll('#replies #contents>ytd-comment-view-model')
+        const insertionPositionEl = mainEl.querySelector('#header-author')
+        const userUrl = decodeURI(userIdEl.href);
+        const userId = urlUtil.getUrlUserId(userUrl);
+        const content = contentEl.textContent.trim();
+        const reply = [];
+        list.push({
+            userId, userUrl, content, reply, insertionPositionEl, explicitSubjectEl: mainEl, el
+        })
+        for (const replyEl of replies) {
+            const replyUserIdEl = replyEl.querySelector('a#author-text');
+            const replyContentEl = replyEl.querySelector('#content-text');
+            const userUrl = decodeURI(replyUserIdEl.href);
+            const userId = urlUtil.getUrlUserId(userUrl);
+            const content = replyContentEl.textContent.trim();
+            const insertionPositionEl = replyEl.querySelector('#header-author')
+            reply.push({
+                userUrl, userId, content, el: replyEl, insertionPositionEl, explicitSubjectEl: replyEl
+            })
+        }
+    }
+    return list
+}
+
+
 export default {
-    getMetaVideoList
+    getMetaVideoList, extractCommentList
 }

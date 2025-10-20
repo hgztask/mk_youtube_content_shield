@@ -52,19 +52,13 @@ const getVideoDataList = async () => {
                 insertionPositionEl = titleContainerEl;
             }
         }
+        const viewEl = insertionPositionEl.querySelector('.yt-content-metadata-view-model__metadata-row:last-child>span:first-child')
         if (durationTxt.includes(':')) {
-            const viewEl = insertionPositionEl.querySelector('.yt-content-metadata-view-model__metadata-row:last-child>span:first-child')
-            if (viewEl) {
-                const viewTxt = viewEl.textContent.trim();
-                view = strUtil.parseView(viewTxt);
-            }
             duration = strUtil.timeStringToSeconds(durationTxt);
-            userName = userAEl.textContent.trim();
-            userUrl = decodeURI(userAEl.href);
-            channelId = urlUtil.getUrlChannelId(userUrl);
-            if (channelId === null) {
-                userId = urlUtil.getUrlUserId(userUrl);
-            }
+        }
+        if (viewEl) {
+            const viewTxt = viewEl.textContent.trim();
+            view = strUtil.parseView(viewTxt);
         }
         const videoAddress = titleAEl.href;
         const videoId = urlUtil.getUrlVideoId(videoAddress);
@@ -73,6 +67,11 @@ const getVideoDataList = async () => {
             compilationId = urlUtil.getUrlCompilationId(videoAddress);
             const namesEl = titleContainerEl.querySelector('.yt-content-metadata-view-model__metadata-row:first-child>span');
             userNameList = strUtil.getCompilationUserNames(namesEl?.textContent.trim());
+        } else if (userAEl) {
+            userName = userAEl.textContent.trim();
+            userUrl = decodeURI(userAEl.href);
+            channelId = urlUtil.getUrlChannelId(userUrl);
+            userId = urlUtil.getUrlUserId(userUrl);
         }
         //卡片内容为播放列表
         if (durationTxt.endsWith('个视频')) {

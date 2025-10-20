@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-drawer :visible.sync="drawer"
-               title="油管屏蔽器"
+               title="油管内容屏蔽器"
                :z-index="2050" size="35%"
                style="position: fixed;">
       <el-tabs tab-position="left" type="card">

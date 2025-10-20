@@ -81,7 +81,9 @@ eventEmitter.on('event:插入屏蔽按钮', (videoOrCommentData) => {
     but.addEventListener('click', (event) => {
         event.stopImmediatePropagation(); // 阻止事件冒泡和同一元素上的其他事件处理器
         event.preventDefault(); // 阻止默认行为
-        console.log('点击了屏蔽按钮', videoOrCommentData);
+        if (__DEV__) {
+            console.log('点击了屏蔽按钮', videoOrCommentData);
+        }
         eventEmitter.emit('event:mask_options_dialog_box', videoOrCommentData)
     })
     insertionPositionEl.appendChild(but);

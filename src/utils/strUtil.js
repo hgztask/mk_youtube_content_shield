@@ -1,5 +1,3 @@
-
-
 /**
  * 将时间字符串转换为秒，如果时间字符串为空，则返回 -1
  * @param timeStr {string}
@@ -38,6 +36,20 @@ const parseView = (viewTxt) => {
     }
 }
 
+//获取合辑用户名组
+const getCompilationUserNames = (namesStr) => {
+    if (namesStr === null || namesStr === undefined || namesStr === '') return null;
+    const userNameList = [];
+    for (const name of namesStr.split('、')) {
+        if (name.endsWith('等')) {
+            userNameList.push(name.substring(0, name.length - 1));
+        } else {
+            userNameList.push(name);
+        }
+    }
+    return userNameList;
+}
+
 export default {
-    timeStringToSeconds,parseView
+    timeStringToSeconds, parseView, getCompilationUserNames
 }

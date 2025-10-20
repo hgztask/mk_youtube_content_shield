@@ -47,23 +47,30 @@ const getRightVideoList = async () => {
             // console.warn('时长元素未找到', el, durationEl);
             continue
         }
-        let duration = -1, view = -1;
+        let duration = -1, view = -1, compilationId, userNameList, userName;
         const titleAEl = titleContainerEl.querySelector('.yt-lockup-metadata-view-model__title');
         const bottomInfoEls = titleContainerEl.querySelectorAll('.yt-content-metadata-view-model__metadata-row span[role="text"]')
-        const userName = bottomInfoEls[0].textContent.trim();
         if (durationTxt.includes(':')) {
             duration = strUtil.timeStringToSeconds(durationTxt);
             const viewTxt = bottomInfoEls[1].textContent.trim();
             view = strUtil.parseView(viewTxt);
         }
         const videoAddress = titleAEl.href;
+
+        if (durationTxt === '合辑') {
+            compilationId = urlUtil.getUrlCompilationId(videoAddress);
+            const namesEl = titleContainerEl.querySelector('.yt-content-metadata-view-model__metadata-row:first-child>span');
+            userNameList = strUtil.getCompilationUserNames(namesEl?.textContent.trim())
+        } else {
+            userName = bottomInfoEls[0].textContent.trim();
+        }
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const title = titleAEl.textContent.trim();
         //插入位置元素
         const insertionPositionEl = el.querySelector('.yt-lockup-view-model__metadata');
         list.push({
-            el, title, view, durationTxt, duration, videoAddress, userName, videoId,
-            insertionPositionEl, explicitSubjectEl: insertionPositionEl,
+            el, title, view, durationTxt, duration, videoAddress, userName, videoId, compilationId,
+            insertionPositionEl, explicitSubjectEl: insertionPositionEl, userNameList
         })
     }
     return list;

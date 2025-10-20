@@ -12,7 +12,6 @@ const isHomeUrlPage = () => {
 
 /**
  * 获取首页中视频列表数据
- * 排除合辑和直播类
  * @returns {Promise<*[]>}
  */
 const getVideoDataList = async () => {
@@ -73,17 +72,7 @@ const getVideoDataList = async () => {
         if (durationTxt === '合辑') {
             compilationId = urlUtil.getUrlCompilationId(videoAddress);
             const namesEl = titleContainerEl.querySelector('.yt-content-metadata-view-model__metadata-row:first-child>span');
-            const namesStr = namesEl?.textContent.trim() ?? null;
-            if (namesStr) {
-                userNameList = [];
-                for (const name of namesStr.split('、')) {
-                    if (name.endsWith('等')) {
-                        userNameList.push(name.substring(0, name.length - 1));
-                    } else {
-                        userNameList.push(name);
-                    }
-                }
-            }
+            userNameList = strUtil.getCompilationUserNames(namesEl?.textContent.trim());
         }
         //卡片内容为播放列表
         if (durationTxt.endsWith('个视频')) {

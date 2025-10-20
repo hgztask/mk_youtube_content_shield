@@ -51,7 +51,7 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
             } else if (value === 'to_videoId_precise') {
                 gmUtil.openInTab('https://www.youtube.com/watch?v=' + videoId);
             } else if (value === 'to_channelId_precise') {
-                gmUtil.openInTab('https://www.youtube.com/' + channelId);
+                gmUtil.openInTab('https://www.youtube.com/channel/' + channelId);
             } else if (value === 'userIdAndUserName') {
                 results = ruleUtil.addRelationRule('userId_username', `${userName}|${userName}`);
             } else if (value === 'userIdAndChannelId') {

@@ -1,7 +1,6 @@
 import layout_init from "./layout_init.js";
 import './menu.js';
 import {eventEmitter} from "./model/EventEmitter.js";
-import gmUtil from "./utils/gmUtil.js";
 import router from "./router.js";
 import watch from './watch.js';
 import defCss from './css/def.css';
@@ -13,8 +12,8 @@ import './model/maskOptionsDialogBox.js'
 console.log('油管内容屏蔽器脚本加载成功！');
 router.staticRoute(document.title, document.location.href);
 window.addEventListener('DOMContentLoaded', () => {
-    gmUtil.addStyle(defCss)
-    gmUtil.addStyle(gzStyleCss)
+    GM_addStyle(defCss)
+    GM_addStyle(gzStyleCss)
     console.log('网页元素加载完成')
     layout_init.init();
 })

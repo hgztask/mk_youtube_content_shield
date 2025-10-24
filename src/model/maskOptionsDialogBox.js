@@ -1,6 +1,5 @@
 import {eventEmitter} from "./EventEmitter.js";
 import ruleUtil from "../utils/ruleUtil.js";
-import gmUtil from "../utils/gmUtil.js";
 
 eventEmitter.on('event:mask_options_dialog_box', (data) => {
     const {userId, channelId, userName, videoId, userNameList} = data;
@@ -47,11 +46,11 @@ eventEmitter.on('event:mask_options_dialog_box', (data) => {
             } else if (value === 'username_precise') {
                 results = ruleUtil.addRule(userName, value);
             } else if (value === 'to_userId_precise') {
-                gmUtil.openInTab('https://www.youtube.com/' + userId);
+                GM_openInTab('https://www.youtube.com/' + userId);
             } else if (value === 'to_videoId_precise') {
-                gmUtil.openInTab('https://www.youtube.com/watch?v=' + videoId);
+                GM_openInTab('https://www.youtube.com/watch?v=' + videoId);
             } else if (value === 'to_channelId_precise') {
-                gmUtil.openInTab('https://www.youtube.com/channel/' + channelId);
+                GM_openInTab('https://www.youtube.com/channel/' + channelId);
             } else if (value === 'userIdAndUserName') {
                 results = ruleUtil.addRelationRule('userId_username', `${userName}|${userName}`);
             } else if (value === 'userIdAndChannelId') {

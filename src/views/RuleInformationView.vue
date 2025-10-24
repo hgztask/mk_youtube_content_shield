@@ -1,6 +1,5 @@
 <script>
 import {eventEmitter} from "../model/EventEmitter.js";
-import gmUtil from "../utils/gmUtil.js";
 import ruleKeyListDataJson from '../res/ruleKeyListDataJson.json'
 
 const ruleCountList = []
@@ -8,7 +7,7 @@ for (const {key, name, pattern} of ruleKeyListDataJson) {
   ruleCountList.push({
     name: pattern + name,
     key,
-    len: gmUtil.getData(key, []).length,
+    len: GM_getValue(key, []).length,
   })
 }
 
@@ -24,7 +23,7 @@ export default {
   methods: {
     refreshInfo(isTip = true) {
       for (const x of this.ruleCountList) {
-        x.len = gmUtil.getData(x.key, []).length;
+        x.len = GM_getValue(x.key, []).length;
       }
       if (!isTip) return;
       this.$notify({title: 'tip', message: '刷新规则信息成功', type: 'success'})

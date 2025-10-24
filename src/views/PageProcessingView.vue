@@ -1,5 +1,4 @@
 <script>
-import gmUtil from "../utils/gmUtil.js";
 import {
   isDelHomeShortsItemGm,
   isDelLiveHomeTopBannerGm,
@@ -21,18 +20,18 @@ export default {
   },
   watch: {
     isDelSponsoredAdsV(n) {
-      gmUtil.setData('is_del_sponsored_ads_gm', n);
+      GM_setValue('is_del_sponsored_ads_gm', n);
     },
     isDelHomeShortsItemV(n) {
-      gmUtil.setData('is_del_home_shorts_item_gm', n);
+      GM_setValue('is_del_home_shorts_item_gm', n);
       homePage.startHomeShortsItemDisplay();
     },
     isDelLiveHomeTopBannerV(n) {
-      gmUtil.setData('is_del_live_home_top_banner_gm', n);
+      GM_setValue('is_del_live_home_top_banner_gm', n);
       liveHomePage.removeLiveHomeTopBanner();
     },
     isDelVideoPageSponsoredAdsV(n) {
-      gmUtil.setData('is_del_video_page_sponsored_ads_gm', n);
+      GM_setValue('is_del_video_page_sponsored_ads_gm', n);
       if (n && playerPage.isUrlPage()) {
         playerPage.checkRightVideoListAd();
       }

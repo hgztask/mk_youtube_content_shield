@@ -1,5 +1,4 @@
 <script>
-import gmUtil from "../utils/gmUtil.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 import {getDrawerShortcutKeyGm} from "../data/localMKData.js";
 //面板设置
@@ -18,7 +17,7 @@ export default {
         this.$message('不需要重复设置');
         return;
       }
-      gmUtil.setData('drawer_shortcut_key_gm', theKeyPressedKey);
+      GM_setValue('drawer_shortcut_key_gm', theKeyPressedKey);
       this.$notify({message: '已设置打开关闭主面板快捷键', type: 'success'});
       this.drawerShortcutKeyVal = theKeyPressedKey;
     }

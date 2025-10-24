@@ -6,7 +6,6 @@ import {eventEmitter} from "../model/EventEmitter.js";
 import RuleSetValueDialog from "../eventEmitter_components/RuleSetValueDialog.vue";
 import ViewRulesRuleDialog from "../eventEmitter_components/ViewRulesRuleDialog.vue";
 import ruleUtil from "../utils/ruleUtil.js";
-import gmUtil from "../utils/gmUtil.js";
 import RuleInformationView from "./RuleInformationView.vue";
 
 const ruleInfoArr = ruleKeyListDataJson;
@@ -51,14 +50,14 @@ export default {
       const key = this.cascaderVal[1];
       const find = ruleInfoArr.find(item => item.key === key);
       this.$confirm(`是要清空${find.name}的规则内容吗？`, 'tip').then(() => {
-        gmUtil.delData(key)
+        GM_deleteValue(key)
         this.$alert(`已清空${find.name}的规则内容`)
       })
     },
     delAllBut() {
       this.$confirm('确定要删除所有规则吗？').then(() => {
         for (const x of ruleInfoArr) {
-          gmUtil.delData(x.key);
+          GM_deleteValue(x.key);
         }
         this.$message.success("删除全部规则成功");
         eventEmitter.emit('刷新规则信息', false);

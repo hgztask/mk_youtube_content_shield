@@ -1,21 +1,19 @@
-import gmUtil from "../utils/gmUtil.js";
-
 export const getDrawerShortcutKeyGm = () => {
-    return gmUtil.getData('get_drawer_shortcut_key_gm', '`')
+    return GM_getValue('get_drawer_shortcut_key_gm', '`')
 }
 
 export const isDelSponsoredAdsGm= () => {
-    return gmUtil.getData('is_del_sponsored_ads_gm', true)
+    return GM_getValue('is_del_sponsored_ads_gm', true)
 }
 
 export const isDelHomeShortsItemGm= () => {
-    return gmUtil.getData('is_del_home_shorts_item_gm', true)
+    return GM_getValue('is_del_home_shorts_item_gm', true)
 }
 
 export const isDelLiveHomeTopBannerGm = () => {
-    return gmUtil.getData('is_del_live_home_top_banner_gm', true)
+    return GM_getValue('is_del_live_home_top_banner_gm', true)
 }
 
 export const isDelVideoPageSponsoredAdsGm = () => {
-    return gmUtil.getData('is_del_video_page_sponsored_ads_gm', false)
+    return GM_getValue('is_del_video_page_sponsored_ads_gm', false)
 }

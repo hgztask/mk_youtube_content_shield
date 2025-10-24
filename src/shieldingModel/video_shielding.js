@@ -3,7 +3,6 @@ import {elEventEmitter} from "../model/elEventEmitter.js";
 import {promiseReject, returnTempVal} from "../data/globalValue.js";
 import shielding, {blockUserId, blockUserName} from "./shielding.js";
 import ruleMatchingUtil from "../utils/ruleMatchingUtil.js";
-import gmUtil from "../utils/gmUtil.js";
 import ruleKeyListDataJson from '../res/ruleKeyListDataJson.json'
 
 //根据标题检查屏蔽
@@ -16,7 +15,7 @@ export const blockTitle = (title) => {
 
 //根据视频id检查屏蔽
 export const blockVideoId = (id) => {
-    if (ruleMatchingUtil.exactMatch(gmUtil.getData('videoId_precise', []), id)) {
+    if (ruleMatchingUtil.exactMatch(GM_getValue('videoId_precise', []), id)) {
         return {state: true, type: '精确视频id', matching: id};
     }
     return returnTempVal;
@@ -24,7 +23,7 @@ export const blockVideoId = (id) => {
 
 //根据频道id检查屏蔽
 export const blockChannelId = (id) => {
-    if (ruleMatchingUtil.exactMatch(gmUtil.getData('channelId_precise', []), id)) {
+    if (ruleMatchingUtil.exactMatch(GM_getValue('channelId_precise', []), id)) {
         return {state: true, type: '精确频道id', matching: id};
     }
     return returnTempVal;
@@ -35,7 +34,7 @@ const blockRelationRule = (type, oneV, twoV) => {
     if (oneV === null || oneV === undefined || oneV === '' || twoV === null || twoV === undefined || twoV === '') {
         return returnTempVal;
     }
-    const typeRuleList = gmUtil.getData(type, []);
+    const typeRuleList = GM_getValue(type, []);
     if (typeRuleList.length === 0) {
         return returnTempVal;
     }

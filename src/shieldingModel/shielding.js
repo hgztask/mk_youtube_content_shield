@@ -1,5 +1,4 @@
 import {returnTempVal} from "../data/globalValue.js";
-import gmUtil from "../utils/gmUtil.js";
 import ruleMatchingUtil from "../utils/ruleMatchingUtil.js";
 
 
@@ -27,7 +26,7 @@ const blockExactAndFuzzyMatching = (val, config) => {
     }
     const {
         exactKey, exactTypeName,
-        exactRuleArr = gmUtil.getData(exactKey, [])
+        exactRuleArr = GM_getValue(exactKey, [])
     } = config;
     if (exactKey) {
         if (ruleMatchingUtil.exactMatch(exactRuleArr, val)) {
@@ -37,7 +36,7 @@ const blockExactAndFuzzyMatching = (val, config) => {
     let matching;
     const {
         fuzzyKey, fuzzyTypeName,
-        fuzzyRuleArr = gmUtil.getData(fuzzyKey, []),
+        fuzzyRuleArr = GM_getValue(fuzzyKey, []),
     } = config;
     if (fuzzyKey) {
         matching = ruleMatchingUtil.fuzzyMatch(fuzzyRuleArr, val);
@@ -47,7 +46,7 @@ const blockExactAndFuzzyMatching = (val, config) => {
     }
     const {
         regexKey, regexTypeName,
-        regexRuleArr = gmUtil.getData(regexKey, [])
+        regexRuleArr = GM_getValue(regexKey, [])
     } = config;
     if (regexKey) {
         matching = ruleMatchingUtil.regexMatch(regexRuleArr, val);
@@ -68,7 +67,7 @@ export const blockUserName = (name) => {
 
 //根据用户id检查屏蔽
 export const blockUserId = (id) => {
-    if (ruleMatchingUtil.exactMatch(gmUtil.getData('userId_precise', []), id)) {
+    if (ruleMatchingUtil.exactMatch(GM_getValue('userId_precise', []), id)) {
         return {state: true, type: '精确用户id', matching: id};
     }
     return returnTempVal;

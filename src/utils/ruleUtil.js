@@ -1,4 +1,3 @@
-import gmUtil from "./gmUtil.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 
 /**
@@ -25,12 +24,12 @@ const addRule = (ruleValue, type) => {
     if (!verificationRes.status) {
         return verificationRes
     }
-    const arr = gmUtil.getData(type, []);
+    const arr = GM_getValue(type, []);
     if (arr.includes(verificationRes.res)) {
         return {status: false, res: '已存在此内容'};
     }
     arr.push(verificationRes.res);
-    gmUtil.setData(type, arr);
+    GM_setValue(type, arr);
     return {status: true, res: '添加成功'};
 }
 
@@ -43,7 +42,7 @@ const addRule = (ruleValue, type) => {
 const batchAddRule = (ruleValues, type) => {
     const successList = [];
     const failList = [];
-    const arr = gmUtil.getData(type, []);
+    const arr = GM_getValue(type, []);
     for (const v of ruleValues) {
         if (arr.includes(v)) {
             failList.push(v);
@@ -53,7 +52,7 @@ const batchAddRule = (ruleValues, type) => {
         successList.push(v);
     }
     if (successList.length > 0) {
-        gmUtil.setData(type, arr);
+        GM_setValue(type, arr);
     }
     return {
         successList,
@@ -68,7 +67,7 @@ const batchAddRule = (ruleValues, type) => {
  * @returns {number|string|null}
  */
 const findRuleItemValue = (type, value) => {
-    return gmUtil.getData(type, []).find(item => item === value) || null
+    return GM_getValue(type, []).find(item => item === value) || null
 }
 
 /**
@@ -83,13 +82,13 @@ const delRule = (type, value) => {
         return verificationRes
     }
     const {res} = verificationRes
-    const arr = gmUtil.getData(type, []);
+    const arr = GM_getValue(type, []);
     const indexOf = arr.indexOf(res);
     if (indexOf === -1) {
         return {status: false, res: '不存在此内容'};
     }
     arr.splice(indexOf, 1);
-    gmUtil.setData(type, arr);
+    GM_setValue(type, arr);
     return {status: true, res: "移除成功"}
 }
 
@@ -121,10 +120,10 @@ const addRelationRule = (type, fragment) => {
     if (fragmentsSplit.length !== 2 || fragmentsSplit.some(item => item.trim() === '')) {
         return {status: false, msg: '非法的关联规则，只要求一个|，或内容不可为空，请检查输入'}
     }
-    const gmData = gmUtil.getData(type, []);
+    const gmData = GM_getValue(type, []);
     if (gmData.length === 0) {
         gmData.push(fragment);
-        gmUtil.setData(type, gmData);
+        GM_setValue(type, gmData);
         return {status: true, msg: '添加成功'}
     }
     const [fragmentsOneV, fragmentsTwoV] = fragmentsSplit;
@@ -137,7 +136,7 @@ const addRelationRule = (type, fragment) => {
         }
     }
     gmData.push(fragment);
-    gmUtil.setData(type, gmData);
+    GM_setValue(type, gmData);
     return {status: true, msg: '添加成功'}
 }
 /**
@@ -148,7 +147,7 @@ const addRelationRule = (type, fragment) => {
 const batchAddRelationRule = (type, fragments) => {
     const successList = [];
     const failList = [];
-    const gmData = gmUtil.getData(type, []);
+    const gmData = GM_getValue(type, []);
     for (const fragment of fragments) {
         const fragmentsSplit = fragment.split('|');
         if (fragmentsSplit.length !== 2 || fragmentsSplit.some(item => item.trim() === '')) {
@@ -174,7 +173,7 @@ const batchAddRelationRule = (type, fragments) => {
         successList.push(fragment);
     }
     if (successList.length > 0) {
-        gmUtil.setData(type, gmData);
+        GM_setValue(type, gmData);
     }
     return {successList, failList}
 }

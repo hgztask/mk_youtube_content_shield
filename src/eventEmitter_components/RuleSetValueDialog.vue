@@ -1,6 +1,5 @@
 <script>
 import ruleUtil from "../utils/ruleUtil.js";
-import gmUtil from "../utils/gmUtil.js";
 import {eventEmitter} from "../model/EventEmitter.js";
 
 /**
@@ -37,10 +36,10 @@ export default {
         this.$alert("新值已存在");
         return;
       }
-      const ruleArr = gmUtil.getData(tempRuleType, []);
+      const ruleArr = GM_getValue(tempRuleType, []);
       const indexOf = ruleArr.indexOf(tempOldVal);
       ruleArr[indexOf] = tempNewVal;
-      gmUtil.setData(tempRuleType, ruleArr);
+      GM_setValue(tempRuleType, ruleArr);
       this.$alert(`已将旧值【${tempOldVal}】修改成【${tempNewVal}】`)
       this.show = false
     }

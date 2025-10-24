@@ -19,7 +19,7 @@ export default {
     //作者B站链接
     b_url: 'https://space.bilibili.com/473239155',
     //当前脚本所在脚本猫地址
-    scriptCat_js_url: 'https://scriptcat.org/zh-CN/users/96219',
+    scriptCat_js_url: 'https://scriptcat.org/zh-CN/script-show-page/4488',
     //脚本开源地址
     github_url: 'https://github.com/hgztask/mk_youtube_content_shield'
 }

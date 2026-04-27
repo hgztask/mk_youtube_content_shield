@@ -19,7 +19,7 @@ const getVideoDataList = async () => {
     const list = []
     for (const el of elList) {
         //时长元素，该值也有可能为合辑
-        const durationEl = el.querySelector('.yt-badge-shape__text');
+        const durationEl = el.querySelector('badge-shape');
         //时长或合辑，即将开始、直播
         const durationTxt = durationEl ? durationEl.textContent.trim() : null;
         //赞助商广告
@@ -37,9 +37,9 @@ const getVideoDataList = async () => {
             // console.warn('标题容器元素未找到', el, titleContainerEl);
             continue;
         }
-        const titleAEl = titleContainerEl.querySelector('.yt-lockup-metadata-view-model__title,#video-title-link');
+        const titleAEl = titleContainerEl.querySelector('h3>a');
         //如果是合辑时userAEl值为null
-        const userAEl = titleContainerEl.querySelector('a.yt-core-attributed-string__link.yt-core-attributed-string__link--call-to-action-color.yt-core-attributed-string--link-inherit-color,ytd-channel-name a[href^="/@"]');
+        const userAEl = titleContainerEl.querySelector('a[href^="/@"]');
         let view = -1, duration = -1, insertionPositionEl, userId = null, userName = null,
             userUrl = null, channelId = null, compilationId = null, userNameList = null;
         //会员专享
@@ -47,12 +47,9 @@ const getVideoDataList = async () => {
         if (vipEl) {
             insertionPositionEl = titleContainerEl
         } else {
-            insertionPositionEl = el.querySelector('.yt-lockup-view-model__metadata');
-            if (insertionPositionEl === null) {
-                insertionPositionEl = titleContainerEl;
-            }
+            insertionPositionEl = titleContainerEl.parentElement
         }
-        const viewEl = insertionPositionEl.querySelector('.yt-content-metadata-view-model__metadata-row:last-child>span:first-child')
+        const viewEl = insertionPositionEl.querySelector("yt-content-metadata-view-model>div>span[aria-label]")
         if (durationTxt.includes(':')) {
             duration = strUtil.timeStringToSeconds(durationTxt);
         }

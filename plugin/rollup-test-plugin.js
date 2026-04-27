@@ -1,3 +1,5 @@
+import mkUtil from "./mkUtil.js";
+
 //去除块注释和部分单行注释
 const clearComments = (content) => {
     //定义正则表达式，匹配块注释和部分单行注释
@@ -9,6 +11,13 @@ const clearLine = (content) => {
     return content.replace(/[\r\n]+/gm, '\n')
 }
 
+
+function getBanner() {
+    const readTamperMonkey = mkUtil.readTamperMonkey("tamper_monkey.json");
+    return mkUtil.generateTamperMeta(readTamperMonkey.notDevData)
+}
+
+
 export default (userOptions = {}) => {
     return {
         name: 'mk-plugin',
@@ -19,6 +28,15 @@ export default (userOptions = {}) => {
                 }, ...userOptions
             }
         },
+        transform(code, id) {
+            if (userOptions.isDev) {
+                return null;
+            }
+            if (id.endsWith('dev.ts')) {
+                return {code: ''}
+            }
+            return null
+        },
         // 处理每个分块
         renderChunk(code, chunk) {
             let newCode;
@@ -26,9 +44,19 @@ export default (userOptions = {}) => {
             if (userOptions.clearComments) {
                 //是否清除注释
                 newCode = clearComments(code);
-                return clearLine(newCode)
+            } else {
+                newCode = code;
             }
-            return clearLine(code)
-        },
+            newCode = clearLine(newCode);
+            if (userOptions.isDev) {
+                return newCode;
+            }
+            const banner = getBanner();
+            if (banner === null) {
+                return newCode
+            }
+            return `${banner}
+            ${newCode}`
+        }
     };
 }

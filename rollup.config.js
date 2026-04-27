@@ -3,6 +3,7 @@ import vue from 'rollup-plugin-vue';
 import replace from '@rollup/plugin-replace'
 import serve from 'rollup-plugin-serve';
 import eslint from '@rollup/plugin-eslint';
+import test_plugin from './plugin/rollup-test-plugin.js'
 
 console.log('Current working directory:', process.cwd());
 // 开发环境为 true，生产环境为 false，默认为开发环境
@@ -68,11 +69,15 @@ export default {
                 }
             }
         }),
-        serve({
+        test_plugin({
+            isDev: __DEV__,
+            clearComments: !__DEV__
+        }),
+        __DEV__ ? serve({
             open: false,
             port: 3003,
             contentBase: 'dist',
-        }),
+        }) : null
         /*        terser({
                     compress: {
                         drop_console: false, // 不删除 console.log 语句

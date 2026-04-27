@@ -28,20 +28,20 @@ export const getCommentCount = () => {
  */
 const getRightVideoList = async () => {
     //原css表达式
-    const elList = await elUtil.findElements('#items>yt-lockup-view-model,.ytd-item-section-renderer.lockup.yt-lockup-view-model--wrapper')
+    const elList = await elUtil.findElements('#items>yt-lockup-view-model,.ytd-item-section-renderer.lockup')
     const list = [];
     for (const el of elList) {
         if (el.classList.contains('ytd-horizontal-card-list-renderer')) {
             //跳过未知非视频项
             continue;
         }
-        const titleContainerEl = el.querySelector('.yt-lockup-metadata-view-model');
+        const titleContainerEl = el.querySelector('yt-lockup-metadata-view-model');
         if (titleContainerEl === null) {
             // console.warn('标题容器元素未找到', el, titleContainerEl);
             continue;
         }
         //时长元素，该值也有可能为合辑
-        const durationEl = el.querySelector('yt-thumbnail-badge-view-model badge-shape>.yt-badge-shape__text');
+        const durationEl = el.querySelector('yt-thumbnail-badge-view-model>badge-shape');
         //时长或合辑文本
         const durationTxt = durationEl ? durationEl.textContent.trim() : null;
         if (durationTxt === null) {
@@ -49,15 +49,14 @@ const getRightVideoList = async () => {
             continue
         }
         let duration = -1, view = -1, compilationId, userNameList, userName;
-        const titleAEl = titleContainerEl.querySelector('.yt-lockup-metadata-view-model__title');
-        const bottomInfoEls = titleContainerEl.querySelectorAll('.yt-content-metadata-view-model__metadata-row span[role="text"]')
+        const titleAEl = titleContainerEl.querySelector('h3[title]>a');
+        const bottomInfoEls = titleContainerEl.querySelectorAll('yt-content-metadata-view-model span[role="text"]')
         if (durationTxt.includes(':')) {
             duration = strUtil.timeStringToSeconds(durationTxt);
             const viewTxt = bottomInfoEls[1].textContent.trim();
             view = strUtil.parseView(viewTxt);
         }
         const videoAddress = titleAEl.href;
-
         if (durationTxt === '合辑') {
             compilationId = urlUtil.getUrlCompilationId(videoAddress);
             const namesEl = titleContainerEl.querySelector('.yt-content-metadata-view-model__metadata-row:first-child>span');
@@ -68,7 +67,7 @@ const getRightVideoList = async () => {
         const videoId = urlUtil.getUrlVideoId(videoAddress);
         const title = titleAEl.textContent.trim();
         //插入位置元素
-        const insertionPositionEl = el.querySelector('.yt-lockup-view-model__metadata');
+        const insertionPositionEl = titleContainerEl.querySelector('h3[title]').parentElement;
         list.push({
             el, title, view, durationTxt, duration, videoAddress, userName, videoId, compilationId,
             insertionPositionEl, explicitSubjectEl: insertionPositionEl, userNameList

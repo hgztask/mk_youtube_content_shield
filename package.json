@@ -4,7 +4,8 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "rollup -c --environment ROLLUP_ENV:production",
+    "build-scriptCat": "rollup -c --environment ROLLUP_ENV:production,platform:scriptCat",
+    "build-greasyFork": "rollup -c --environment ROLLUP_ENV:production,platform:greasyFork",
     "watch:dev": "rollup -w -c"
   },
   "private": true,

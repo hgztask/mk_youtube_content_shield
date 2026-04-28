@@ -5,10 +5,9 @@ import serve from 'rollup-plugin-serve';
 import eslint from '@rollup/plugin-eslint';
 import test_plugin from './plugin/rollup-test-plugin.js'
 
-console.log('Current working directory:', process.cwd());
-// 开发环境为 true，生产环境为 false，默认为开发环境
 const __DEV__ = (process.env.ROLLUP_ENV || 'development') === 'development';
-console.log('环境为', __DEV__);
+const platform = (process.env.platform)
+console.log('__DEV__:' + __DEV__, "平台:" + platform);
 export default {
     // 性能监控
     perf: false,
@@ -71,7 +70,8 @@ export default {
         }),
         test_plugin({
             isDev: __DEV__,
-            clearComments: !__DEV__
+            clearComments: !__DEV__,
+            platform: platform
         }),
         __DEV__ ? serve({
             open: false,
